@@ -29,11 +29,14 @@ const Navbar = () => {
       <li>
         <NavLink to="/">Home</NavLink>
       </li>
+      <li>
+        <NavLink to="/">Available Camps</NavLink>
+      </li>
     </>
   );
 
   return (
-    <nav>
+    <nav className="top-0 sticky z-10">
       <div className="navbar bg-base-100 shadow-sm">
         <div className="navbar-start">
           <div className="dropdown">
