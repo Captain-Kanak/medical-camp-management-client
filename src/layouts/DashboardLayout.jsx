@@ -2,13 +2,17 @@ import React from "react";
 import { NavLink, Outlet } from "react-router";
 import Logo from "../components/Logo";
 import { CgProfile } from "react-icons/cg";
-import {
-  MdFormatListBulletedAdd,
-  MdManageAccounts,
-  MdOutlineManageSearch,
-} from "react-icons/md";
+import { MdManageAccounts, MdPayment } from "react-icons/md";
+import useUserRole from "../hooks/useUserRole";
+import { IoAnalyticsSharp } from "react-icons/io5";
+import { FaCampground, FaPlusCircle } from "react-icons/fa";
+import { HiOutlineClipboardList } from "react-icons/hi";
 
 const DashboardLayout = () => {
+  const { role, roleLoading } = useUserRole();
+
+  console.log(role);
+
   return (
     <div className="max-w-7xl mx-auto">
       <div className="drawer lg:drawer-open">
@@ -58,22 +62,48 @@ const DashboardLayout = () => {
                 <CgProfile /> Profile
               </NavLink>
             </li>
+
             {/* Only for Organizer */}
-            <li>
-              <NavLink className="text-lg">
-                <MdFormatListBulletedAdd /> Add A Camp
-              </NavLink>
-            </li>
-            <li>
-              <NavLink className="text-lg">
-                <MdOutlineManageSearch /> Manage Camps
-              </NavLink>
-            </li>
-            <li>
-              <NavLink className="text-lg">
-                <MdManageAccounts /> Manage Registered Camps
-              </NavLink>
-            </li>
+            {!roleLoading && role === "organizer" && (
+              <>
+                <li>
+                  <NavLink className="text-lg">
+                    <FaPlusCircle /> Add A Camp
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink className="text-lg">
+                    <MdManageAccounts /> Manage Camps
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink className="text-lg">
+                    <HiOutlineClipboardList /> Manage Registered Camps
+                  </NavLink>
+                </li>
+              </>
+            )}
+
+            {/* Only for Participant */}
+            {!roleLoading && role === "participant" && (
+              <>
+                <li>
+                  <NavLink className="text-lg">
+                    <IoAnalyticsSharp /> Analytics
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink className="text-lg">
+                    <FaCampground /> Registered Camps
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink className="text-lg">
+                    <MdPayment /> Payment History
+                  </NavLink>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </div>
