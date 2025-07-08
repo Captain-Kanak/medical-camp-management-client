@@ -3,6 +3,7 @@ import Lottie from "lottie-react";
 import { Outlet } from "react-router";
 import authentication from "../assets/lotties/authentication.json";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const AuthLayout = () => {
   return (
@@ -16,6 +17,7 @@ const AuthLayout = () => {
           <Outlet />
         </div>
       </div>
+      <Footer/>
     </div>
   );
 };
