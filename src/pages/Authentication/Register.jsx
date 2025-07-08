@@ -80,8 +80,6 @@ const Register = () => {
 
   const handleImageUpload = async (e) => {
     const image = e.target.files[0];
-    console.log(image);
-
     const formData = new FormData();
     formData.append("image", image);
 

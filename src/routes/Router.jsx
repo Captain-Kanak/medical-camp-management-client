@@ -7,6 +7,7 @@ import SignIn from "../pages/Authentication/SignIn";
 import AvailableCamp from "../pages/AvailableCamp/AvailableCamp";
 import DashboardLayout from "../layouts/DashboardLayout";
 import PrivateRouter from "./PrivateRouter";
+import Profile from "../pages/Dashboard/Profile";
 
 export const router = createBrowserRouter([
   {
@@ -44,5 +45,11 @@ export const router = createBrowserRouter([
         <DashboardLayout />
       </PrivateRouter>
     ),
+    children: [
+      {
+        path: "profile",
+        Component: Profile,
+      },
+    ],
   },
 ]);

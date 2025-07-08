@@ -11,8 +11,6 @@ import { HiOutlineClipboardList } from "react-icons/hi";
 const DashboardLayout = () => {
   const { role, roleLoading } = useUserRole();
 
-  console.log(role);
-
   return (
     <div className="max-w-7xl mx-auto">
       <div className="drawer lg:drawer-open">
@@ -58,7 +56,7 @@ const DashboardLayout = () => {
               <Logo />
             </div>
             <li>
-              <NavLink className="text-lg">
+              <NavLink to="/dashboard/profile" className="text-lg">
                 <CgProfile /> Profile
               </NavLink>
             </li>
