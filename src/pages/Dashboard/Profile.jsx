@@ -93,7 +93,7 @@ const Profile = () => {
     <div className="max-w-2xl mx-auto mt-10 p-4">
       <h2 className="text-2xl font-bold mb-4 text-center">Your Profile</h2>
 
-      <div className="bg-white shadow rounded-lg p-6">
+      <div className="bg-base-200 shadow rounded-lg p-6">
         <div className="flex flex-col items-center space-x-4 mb-4">
           <img
             src={user?.photoURL || userImage}
@@ -101,10 +101,10 @@ const Profile = () => {
             className="w-32 h-32 rounded-full object-cover"
           />
           <div className="mt-2">
-            <h3 className="text-xl text-center text-black font-semibold">
+            <h3 className="text-xl text-center font-semibold">
               {user?.displayName}
             </h3>
-            <p className="text-gray-600 text-center">{user?.email}</p>
+            <p className="text-center">{user?.email}</p>
           </div>
         </div>
 
@@ -121,7 +121,7 @@ const Profile = () => {
       {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="rounded-lg bg-white shadow-lg w-full max-w-md p-6 relative">
+          <div className="rounded-lg bg-base-200 shadow-lg w-full max-w-md p-6 relative">
             <h3 className="text-xl font-bold mb-4">Update Profile</h3>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               {/* name field */}
@@ -147,20 +147,11 @@ const Profile = () => {
                 <input
                   type="file"
                   onChange={handleImageUpload}
-                  className="w-full border px-3 py-2 rounded cursor-pointer"
+                  className="w-full file-input file-input-bordered mt-1"
                 />
                 {uploading && (
                   <p className="text-sm text-yellow-600">Uploading...</p>
                 )}
-                {/* {profilePic && (
-                  <div className="mt-2">
-                    <img
-                      src={profilePic}
-                      alt="Preview"
-                      className="w-24 h-24 rounded-full object-cover"
-                    />
-                  </div>
-                )} */}
               </div>
 
               {/* email field */}
@@ -172,7 +163,7 @@ const Profile = () => {
                   {...register("email")}
                   type="email"
                   disabled
-                  className="w-full border px-3 py-2 rounded bg-gray-100"
+                  className="w-full border px-3 py-2 rounded"
                 />
               </div>
 

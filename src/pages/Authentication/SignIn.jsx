@@ -22,7 +22,7 @@ const SignIn = () => {
   const onSubmit = (data) => {
     const { email, password } = data;
 
-    // sign in user with eamil and password
+    // sign in user with email and password
     signInUser(email, password).then(async (result) => {
       const user = result.user;
 

@@ -65,7 +65,7 @@ const DashboardLayout = () => {
             {!roleLoading && role === "organizer" && (
               <>
                 <li>
-                  <NavLink className="text-lg">
+                  <NavLink to="/dashboard/add-camp" className="text-lg">
                     <FaPlusCircle /> Add A Camp
                   </NavLink>
                 </li>
