@@ -1,7 +1,7 @@
 import React from "react";
 import SocialLogIn from "./SocialLogIn";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import useAuth from "../../hooks/useAuth";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import Swal from "sweetalert2";
@@ -9,6 +9,9 @@ import Swal from "sweetalert2";
 const SignIn = () => {
   const { signInUser } = useAuth();
   const axiosPublic = useAxiosPublic();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from || "/";
 
   const {
     register,
@@ -31,6 +34,7 @@ const SignIn = () => {
 
       const res = await axiosPublic.patch("/users", updateInfo);
       if (res.data.modifiedCount > 0 || res.data.upsertedCount > 0) {
+        navigate(from);
         Swal.fire({
           icon: "success",
           title: "Login Successful",
@@ -107,7 +111,7 @@ const SignIn = () => {
             Don’t have an account?{" "}
             <Link
               to="/register"
-              state={{}}
+              state={{ from }}
               className="text-blue-500 hover:underline"
             >
               Sign Up

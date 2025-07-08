@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import SocialLogIn from "./SocialLogIn";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import axios from "axios";
 import useAuth from "../../hooks/useAuth";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
@@ -11,6 +11,9 @@ const Register = () => {
   const { createUser, updateUserProfile } = useAuth();
   const [profilePic, setProfilePic] = useState("");
   const axiosPublic = useAxiosPublic();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from || "/";
 
   const {
     register,
@@ -39,13 +42,14 @@ const Register = () => {
               name,
               email,
               photo: profilePic,
-              role: "user", // default role
+              role: "participant", // default role
               creation_date: user.metadata?.creationTime,
               last_signin_time: user.metadata?.lastSignInTime,
             };
 
             const res = await axiosPublic.post("/users", userInfo);
             if (res.data.insertedId) {
+              navigate(from);
               Swal.fire({
                 icon: "success",
                 title: "Registration Successful!",

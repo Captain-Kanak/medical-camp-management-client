@@ -6,6 +6,7 @@ import Register from "../pages/Authentication/Register";
 import SignIn from "../pages/Authentication/SignIn";
 import AvailableCamp from "../pages/AvailableCamp/AvailableCamp";
 import DashboardLayout from "../layouts/DashboardLayout";
+import PrivateRouter from "./PrivateRouter";
 
 export const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ export const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <DashboardLayout />,
+    element: (
+      <PrivateRouter>
+        <DashboardLayout />
+      </PrivateRouter>
+    ),
   },
 ]);

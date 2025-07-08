@@ -2,10 +2,14 @@ import React from "react";
 import useAuth from "../../hooks/useAuth";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import Swal from "sweetalert2";
+import { useLocation, useNavigate } from "react-router";
 
 const SocialLogIn = () => {
   const { googleSignIn } = useAuth();
   const axiosPublic = useAxiosPublic();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from || "/";
 
   const handleGoogleSignIn = () => {
     googleSignIn().then(async (result) => {
@@ -18,7 +22,7 @@ const SocialLogIn = () => {
         name: user.displayName,
         email,
         photo: user.photoURL,
-        role: "user", // default role
+        role: "participant", // default role
         creation_date: user.metadata?.creationTime,
         last_signin_time: lastSignInTime,
       };
@@ -37,6 +41,7 @@ const SocialLogIn = () => {
       });
 
       if (res.data.modifiedCount > 0 || res.data.acknowledged) {
+        navigate(from);
         Swal.fire({
           icon: "success",
           title: "Login Successful",
