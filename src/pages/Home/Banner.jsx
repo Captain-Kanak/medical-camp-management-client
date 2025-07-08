@@ -18,21 +18,33 @@ const Banner = () => {
         className="mt-10 px-4 lg:px-0"
       >
         <div>
-          <img className="max-w-7xl max-h-[500px]" src={photo1} alt="" />
+          <img
+            className="max-w-7xl max-h-[500px] rounded-xl"
+            src={photo1}
+            alt=""
+          />
           <p className="legend">
             Simplify operations. Improve outcomes. Serve more people.
           </p>
         </div>
 
         <div>
-          <img className="max-w-7xl max-h-[500px]" src={photo2} alt="" />
+          <img
+            className="max-w-7xl max-h-[500px] rounded-xl"
+            src={photo2}
+            alt=""
+          />
           <p className="legend">
             Efficiently organize and manage medical camps anywhere, anytime.
           </p>
         </div>
 
         <div>
-          <img className="max-w-7xl max-h-[500px]" src={photo3} alt="" />
+          <img
+            className="max-w-7xl max-h-[500px] rounded-xl"
+            src={photo3}
+            alt=""
+          />
           <p className="legend">
             Streamline patient registration, doctor assignments, and reporting
             in one platform.
@@ -40,14 +52,22 @@ const Banner = () => {
         </div>
 
         <div>
-          <img className="max-w-7xl max-h-[500px]" src={photo4} alt="" />
+          <img
+            className="max-w-7xl max-h-[500px] rounded-xl"
+            src={photo4}
+            alt=""
+          />
           <p className="legend">
             From planning to patient care — manage your medical camps with ease.
           </p>
         </div>
 
         <div>
-          <img className="max-w-7xl max-h-[500px]" src={photo5} alt="" />
+          <img
+            className="max-w-7xl max-h-[500px] rounded-xl"
+            src={photo5}
+            alt=""
+          />
           <p className="legend">
             Awards for innovation, dedication, and service in community health.
           </p>

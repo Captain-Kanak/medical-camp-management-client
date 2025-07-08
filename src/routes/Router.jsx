@@ -4,6 +4,8 @@ import Home from "../pages/Home/Home";
 import AuthLayout from "../layouts/AuthLayout";
 import Register from "../pages/Authentication/Register";
 import SignIn from "../pages/Authentication/SignIn";
+import AvailableCamp from "../pages/AvailableCamp/AvailableCamp";
+import DashboardLayout from "../layouts/DashboardLayout";
 
 export const router = createBrowserRouter([
   {
@@ -13,6 +15,10 @@ export const router = createBrowserRouter([
       {
         index: true,
         Component: Home,
+      },
+      {
+        path: "available-camp",
+        Component: AvailableCamp,
       },
     ],
   },
@@ -29,5 +35,9 @@ export const router = createBrowserRouter([
         Component: SignIn,
       },
     ],
+  },
+  {
+    path: "/dashboard",
+    element: <DashboardLayout />,
   },
 ]);

@@ -30,7 +30,7 @@ const Navbar = () => {
         <NavLink to="/">Home</NavLink>
       </li>
       <li>
-        <NavLink to="/">Available Camps</NavLink>
+        <NavLink to="/available-camp">Available Camps</NavLink>
       </li>
     </>
   );
@@ -85,18 +85,24 @@ const Navbar = () => {
               </div>
               <ul
                 tabIndex={0}
-                className="mt-3 z-[1] p-3 shadow menu menu-sm dropdown-content bg-gray-400 rounded-box w-52"
+                className="mt-3 z-[1] p-3 shadow menu menu-sm dropdown-content bg-gray-600 rounded-box w-52"
               >
                 <li className="text-lg font-semibold text-gray-100 text-center">
                   {user.displayName || "Anonymous"}
                 </li>
                 <li>
-                  <NavLink className="text-lg font-semibold text-gray-100">
+                  <NavLink
+                    to="/dashboard"
+                    className="text-lg font-semibold text-gray-100"
+                  >
                     Dashboard
                   </NavLink>
                 </li>
                 <li>
-                  <button onClick={handleLogOut} className="text-lg">
+                  <button
+                    onClick={handleLogOut}
+                    className="text-lg font-semibold text-gray-100"
+                  >
                     <CgLogOut size={25} /> Log Out
                   </button>
                 </li>
