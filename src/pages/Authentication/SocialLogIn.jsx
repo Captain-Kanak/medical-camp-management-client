@@ -1,10 +1,60 @@
 import React from "react";
+import useAuth from "../../hooks/useAuth";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
+import Swal from "sweetalert2";
 
 const SocialLogIn = () => {
+  const { googleSignIn } = useAuth();
+  const axiosPublic = useAxiosPublic();
+
+  const handleGoogleSignIn = () => {
+    googleSignIn().then(async (result) => {
+      const user = result.user;
+
+      const email = user.email;
+      const lastSignInTime = user.metadata?.lastSignInTime;
+
+      const userInfo = {
+        name: user.displayName,
+        email,
+        photo: user.photoURL,
+        role: "user", // default role
+        creation_date: user.metadata?.creationTime,
+        last_signin_time: lastSignInTime,
+      };
+
+      // send user information to the database
+      try {
+        await axiosPublic.post("/users", userInfo);
+      } catch (err) {
+        console.warn("User already exists or failed to save:", err);
+      }
+
+      // update user last sign in time
+      const res = await axiosPublic.patch("/users", {
+        email,
+        lastSignInTime,
+      });
+
+      if (res.data.modifiedCount > 0 || res.data.acknowledged) {
+        Swal.fire({
+          icon: "success",
+          title: "Login Successful",
+          text: "Welcome back!",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+      }
+    });
+  };
+
   return (
     <div className="text-center">
       <div className="text-black my-2">OR</div>
-      <button className="btn bg-white text-black border-[#e5e5e5]">
+      <button
+        onClick={handleGoogleSignIn}
+        className="btn bg-white text-black border-[#e5e5e5]"
+      >
         <svg
           aria-label="Google logo"
           width="16"

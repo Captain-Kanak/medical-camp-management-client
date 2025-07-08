@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import SocialLogIn from "./SocialLogIn";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router";
+import axios from "axios";
+import useAuth from "../../hooks/useAuth";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
+import Swal from "sweetalert2";
 
 const Register = () => {
+  const { createUser, updateUserProfile } = useAuth();
+  const [profilePic, setProfilePic] = useState("");
+  const axiosPublic = useAxiosPublic();
+
   const {
     register,
     handleSubmit,
@@ -11,7 +19,74 @@ const Register = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
+    const { name, email, password } = data;
+
+    // create user with email and password
+    createUser(email, password)
+      .then((result) => {
+        const user = result.user;
+
+        // update user profile in Firebase
+        const userProfile = {
+          displayName: name,
+          photoURL: profilePic,
+        };
+
+        updateUserProfile(userProfile)
+          .then(async () => {
+            // send user info to the database
+            const userInfo = {
+              name,
+              email,
+              photo: profilePic,
+              role: "user", // default role
+              creation_date: user.metadata?.creationTime,
+              last_signin_time: user.metadata?.lastSignInTime,
+            };
+
+            const res = await axiosPublic.post("/users", userInfo);
+            if (res.data.insertedId) {
+              Swal.fire({
+                icon: "success",
+                title: "Registration Successful!",
+                text: "Your account has been created successfully.",
+                timer: 2000,
+                showConfirmButton: false,
+              });
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+            Swal.fire({
+              icon: "error",
+              title: "Profile Update Failed",
+              text: error.message,
+            });
+          });
+      })
+      .catch((error) => {
+        console.error(error);
+        Swal.fire({
+          icon: "error",
+          title: "Registration Failed",
+          text: error.message,
+        });
+      });
+  };
+
+  const handleImageUpload = async (e) => {
+    const image = e.target.files[0];
+    console.log(image);
+
+    const formData = new FormData();
+    formData.append("image", image);
+
+    const imageUploadUrl = `https://api.imgbb.com/1/upload?key=${
+      import.meta.env.VITE_image_upload_key
+    }`;
+
+    const res = await axios.post(imageUploadUrl, formData);
+    setProfilePic(res.data?.data?.url);
   };
 
   return (
@@ -22,62 +97,55 @@ const Register = () => {
         </h2>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          {/* Name */}
+          {/* Name field */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Name
             </label>
             <input
               type="text"
-              {...register("name", { required: "Name is required" })}
+              {...register("name", { required: true })}
               className="w-full px-4 py-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 
               text-black"
               placeholder="Name"
             />
-            {errors.name && (
-              <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+            {errors.name?.type === "required" && (
+              <p className="text-red-500 text-sm mt-1">Name is required</p>
             )}
           </div>
 
-          {/* Image */}
-          {/* <div>
+          {/* Image field */}
+          <div>
             <label className="block text-sm font-medium text-gray-700">
-              Photo URL
+              Upload Your Photo
             </label>
             <input
               type="file"
               onChange={handleImageUpload}
-              {...register("photo", { required: "Photo is required" })}
               className="w-full px-4 py-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 
-              text-black"
+              text-black cursor-pointer"
+              required
             />
-            {errors.photo && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.photo.message}
-              </p>
-            )}
-          </div> */}
+          </div>
 
-          {/* Email */}
+          {/* Email field */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Email
             </label>
             <input
               type="email"
-              {...register("email", { required: "Email is required" })}
+              {...register("email", { required: true })}
               className="w-full px-4 py-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 
               text-black"
               placeholder="Email"
             />
-            {errors.email && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.email.message}
-              </p>
+            {errors.email?.type === "required" && (
+              <p className="text-red-500 text-sm mt-1">Email is required</p>
             )}
           </div>
 
-          {/* Password */}
+          {/* Password field */}
           <div>
             <label className="block text-sm font-medium text-gray-700">
               Password
@@ -85,7 +153,7 @@ const Register = () => {
             <input
               type="password"
               {...register("password", {
-                required: "Password is required",
+                required: true,
                 minLength: {
                   value: 6,
                   message: "Password must be at least 6 characters",
@@ -95,9 +163,12 @@ const Register = () => {
               text-black"
               placeholder="Password"
             />
-            {errors.password && (
+            {errors.password?.type === "required" && (
+              <p className="text-red-500 text-sm mt-1">Password is required</p>
+            )}
+            {errors.password?.type === "minLength" && (
               <p className="text-red-500 text-sm mt-1">
-                {errors.password.message}
+                Password must be 6 characters or long
               </p>
             )}
           </div>

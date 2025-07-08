@@ -2,8 +2,14 @@ import React from "react";
 import SocialLogIn from "./SocialLogIn";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router";
+import useAuth from "../../hooks/useAuth";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
+import Swal from "sweetalert2";
 
 const SignIn = () => {
+  const { signInUser } = useAuth();
+  const axiosPublic = useAxiosPublic();
+
   const {
     register,
     handleSubmit,
@@ -11,7 +17,29 @@ const SignIn = () => {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
+    const { email, password } = data;
+
+    // sign in user with eamil and password
+    signInUser(email, password).then(async (result) => {
+      const user = result.user;
+
+      // update last sign in time to the database
+      const updateInfo = {
+        email: user.email,
+        lastSignInTime: user.metadata?.lastSignInTime,
+      };
+
+      const res = await axiosPublic.patch("/users", updateInfo);
+      if (res.data.modifiedCount > 0 || res.data.upsertedCount > 0) {
+        Swal.fire({
+          icon: "success",
+          title: "Login Successful",
+          text: "Welcome back!",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+      }
+    });
   };
 
   return (
@@ -29,15 +57,13 @@ const SignIn = () => {
             </label>
             <input
               type="email"
-              {...register("email", { required: "Email is required" })}
+              {...register("email", { required: true })}
               className="w-full px-4 py-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500
               text-black"
               placeholder="Email"
             />
-            {errors.email && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.email.message}
-              </p>
+            {errors.email?.type === "required" && (
+              <p className="text-red-500 text-sm mt-1">Email is required</p>
             )}
           </div>
 
@@ -49,16 +75,19 @@ const SignIn = () => {
             <input
               type="password"
               {...register("password", {
-                required: "Password is required",
+                required: true,
                 minLength: 6,
               })}
               className="w-full px-4 py-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 
               text-black"
               placeholder="Password"
             />
-            {errors.password && (
+            {errors.password?.type === "required" && (
+              <p className="text-red-500 text-sm mt-1">Password is required</p>
+            )}
+            {errors.password?.type === "minLength" && (
               <p className="text-red-500 text-sm mt-1">
-                {errors.password.message}
+                Password must be 6 characters or long
               </p>
             )}
           </div>
