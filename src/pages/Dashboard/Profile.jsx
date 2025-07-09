@@ -98,7 +98,7 @@ const Profile = () => {
           <img
             src={user?.photoURL || userImage}
             alt="User Avatar"
-            className="w-32 h-32 rounded-full object-cover"
+            className="w-32 h-32 rounded-full object-cover border-4 border-blue-500"
           />
           <div className="mt-2">
             <h3 className="text-xl text-center font-semibold">

@@ -70,7 +70,7 @@ const DashboardLayout = () => {
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink className="text-lg">
+                  <NavLink to="/dashboard/manage-camp" className="text-lg">
                     <MdManageAccounts /> Manage Camps
                   </NavLink>
                 </li>
