@@ -10,6 +10,7 @@ import PrivateRouter from "./PrivateRouter";
 import Profile from "../pages/Dashboard/Profile";
 import AddCamp from "../pages/Dashboard/Organizer/AddCamp";
 import ManageCamp from "../pages/Dashboard/Organizer/ManageCamp";
+import CampDetails from "../pages/Home/CampDetails";
 
 export const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ export const router = createBrowserRouter([
       {
         path: "available-camp",
         Component: AvailableCamp,
+      },
+      {
+        path: "/camp-details/:campId",
+        Component: CampDetails,
       },
     ],
   },
