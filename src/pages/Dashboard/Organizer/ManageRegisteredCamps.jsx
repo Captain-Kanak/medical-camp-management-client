@@ -19,7 +19,7 @@ const ManageRegisteredCamps = () => {
     },
   });
 
-  const handleCancel = async (id) => {
+  const handleCancel = async (id, campId) => {
     const result = await Swal.fire({
       title: "Cancel Registration?",
       text: "Are you sure you want to cancel this registration?",
@@ -30,7 +30,9 @@ const ManageRegisteredCamps = () => {
 
     if (result.isConfirmed) {
       try {
-        const res = await axiosSecure.delete(`/cancel-registration/${id}`);
+        const res = await axiosSecure.delete(
+          `/cancel-registration/${id}?campId=${campId}`
+        );
         if (res.data.deletedCount > 0) {
           Swal.fire(
             "Cancelled!",
@@ -108,7 +110,7 @@ const ManageRegisteredCamps = () => {
                 </td>
                 <td className="px-4 py-2 border-b border-gray-300 md:border md:border-gray-300 block md:table-cell text-center">
                   <button
-                    onClick={() => handleCancel(camp._id)}
+                    onClick={() => handleCancel(camp._id, camp.campId)}
                     className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 mt-2 md:mt-0 cursor-pointer"
                   >
                     Cancel

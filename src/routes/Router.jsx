@@ -12,6 +12,7 @@ import AddCamp from "../pages/Dashboard/Organizer/AddCamp";
 import ManageCamp from "../pages/Dashboard/Organizer/ManageCamp";
 import CampDetails from "../pages/Home/CampDetails";
 import ManageRegisteredCamps from "../pages/Dashboard/Organizer/ManageRegisteredCamps";
+import RegistredCamp from "../pages/Dashboard/Participant/RegistredCamp";
 
 export const router = createBrowserRouter([
   {
@@ -58,7 +59,7 @@ export const router = createBrowserRouter([
         path: "profile",
         Component: Profile,
       },
-      // organizer route
+      // organizer routes
       {
         path: "add-camp",
         element: <AddCamp />,
@@ -70,6 +71,11 @@ export const router = createBrowserRouter([
       {
         path: "manage-registered-camps",
         element: <ManageRegisteredCamps />,
+      },
+      // participant routes
+      {
+        path: "registered-camps",
+        element: <RegistredCamp />,
       },
     ],
   },

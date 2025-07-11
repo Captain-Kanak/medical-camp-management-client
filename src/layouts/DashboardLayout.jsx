@@ -94,7 +94,7 @@ const DashboardLayout = () => {
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink className="text-lg">
+                  <NavLink to="/dashboard/registered-camps" className="text-lg">
                     <FaCampground /> Registered Camps
                   </NavLink>
                 </li>
