@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { Link } from "react-router";
+import Spinner from "../../components/Spinner";
 
 const PopularCamps = () => {
   const axiosPublic = useAxiosPublic();
@@ -18,8 +19,7 @@ const PopularCamps = () => {
     },
   });
 
-  if (isLoading)
-    return <p className="text-center py-10">Loading popular camps...</p>;
+  if (isLoading) return <Spinner />;
   if (isError)
     return (
       <p className="text-center text-red-500 py-10">

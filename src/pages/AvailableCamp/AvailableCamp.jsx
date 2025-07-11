@@ -4,6 +4,7 @@ import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { Link } from "react-router";
 import { HiViewColumns } from "react-icons/hi2";
 import { HiViewGrid } from "react-icons/hi";
+import Spinner from "../../components/Spinner";
 
 const AvailableCamp = () => {
   const axiosPublic = useAxiosPublic();
@@ -58,7 +59,7 @@ const AvailableCamp = () => {
     return filtered;
   }, [camps, searchTerm, sortBy]);
 
-  if (isLoading) return <p className="text-center py-10">Loading camps...</p>;
+  if (isLoading) return <Spinner />;
   if (isError)
     return (
       <p className="text-center text-red-500 py-10">Failed to load camps.</p>

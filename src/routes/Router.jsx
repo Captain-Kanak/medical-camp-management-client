@@ -11,6 +11,7 @@ import Profile from "../pages/Dashboard/Profile";
 import AddCamp from "../pages/Dashboard/Organizer/AddCamp";
 import ManageCamp from "../pages/Dashboard/Organizer/ManageCamp";
 import CampDetails from "../pages/Home/CampDetails";
+import ManageRegisteredCamps from "../pages/Dashboard/Organizer/ManageRegisteredCamps";
 
 export const router = createBrowserRouter([
   {
@@ -65,6 +66,10 @@ export const router = createBrowserRouter([
       {
         path: "manage-camp",
         element: <ManageCamp />,
+      },
+      {
+        path: "manage-registered-camps",
+        element: <ManageRegisteredCamps />,
       },
     ],
   },

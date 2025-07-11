@@ -148,6 +148,7 @@ const Profile = () => {
                   type="file"
                   onChange={handleImageUpload}
                   className="w-full file-input file-input-bordered mt-1"
+                  required
                 />
                 {uploading && (
                   <p className="text-sm text-yellow-600">Uploading...</p>

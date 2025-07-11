@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import useAxiosPublic from "../../../hooks/useAxiosPublic";
 import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const ManageCamp = () => {
-  const axiosPublic = useAxiosPublic();
+  const axiosSecure = useAxiosSecure();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [campImage, setCampImage] = useState("");
@@ -25,10 +25,12 @@ const ManageCamp = () => {
   const { data: camps = [], refetch } = useQuery({
     queryKey: ["camps"],
     queryFn: async () => {
-      const res = await axiosPublic.get("/camps");
+      const res = await axiosSecure.get("/camps");
       return res.data;
     },
   });
+
+  console.log(camps);
 
   const handleEdit = (camp) => {
     setEditingCamp(camp);
@@ -55,7 +57,7 @@ const ManageCamp = () => {
 
     if (result.isConfirmed) {
       try {
-        const res = await axiosPublic.delete(`/delete-camp/${id}`);
+        const res = await axiosSecure.delete(`/delete-camp/${id}`);
         if (res.data.deletedCount > 0) {
           Swal.fire("Deleted!", "Camp has been deleted.", "success");
           refetch();
@@ -81,7 +83,7 @@ const ManageCamp = () => {
     };
 
     try {
-      const res = await axiosPublic.put(
+      const res = await axiosSecure.put(
         `/update-camp/${editingCamp._id}`,
         updateCamp
       );

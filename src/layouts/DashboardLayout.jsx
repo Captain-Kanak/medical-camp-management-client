@@ -75,7 +75,10 @@ const DashboardLayout = () => {
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink className="text-lg">
+                  <NavLink
+                    to="/dashboard/manage-registered-camps"
+                    className="text-lg"
+                  >
                     <HiOutlineClipboardList /> Manage Registered Camps
                   </NavLink>
                 </li>
