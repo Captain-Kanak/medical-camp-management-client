@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import { useParams } from "react-router";
 import Spinner from "../../../../components/Spinner";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
+import useAuth from "../../../../hooks/useAuth";
+import Swal from "sweetalert2";
 
 const PaymentForm = () => {
   const stripe = useStripe();
@@ -11,6 +13,7 @@ const PaymentForm = () => {
   const [paymentError, setPaymentError] = useState(null);
   const { campId } = useParams();
   const axiosSecure = useAxiosSecure();
+  const { user } = useAuth();
 
   const { data: camp = {}, isLoading } = useQuery({
     queryKey: ["camp", campId],
@@ -40,33 +43,55 @@ const PaymentForm = () => {
       console.log(error);
       setPaymentError(error.message);
     } else {
-      console.log(paymentMethod);
       setPaymentError(null);
-      // you can proceed to backend call here
-    }
+      console.log(paymentMethod);
 
-    // create payment intent
-    const res = await axiosSecure.post("/create-payment-intent", {
-      amountInCents,
-      campId,
-    });
+      // create payment intent
+      const res = await axiosSecure.post("/create-payment-intent", {
+        amountInCents,
+        campId,
+      });
 
-    const clientSecret = res.data.clientSecret;
+      const clientSecret = res.data.clientSecret;
 
-    const result = await stripe.confirmCardPayment(clientSecret, {
-      payment_method: {
-        card: elements.getElement(CardElement),
-        billing_details: {
-          name: "Jenny Rosen",
+      // proceed to confirm payment
+      const result = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: elements.getElement(CardElement),
+          billing_details: {
+            name: user.displayName,
+            email: user.email,
+          },
         },
-      },
-    });
+      });
 
-    if (result.error) {
-      console.log(result.error.message);
-    } else {
-      if (result.paymentIntent.status === "succeeded") {
-        console.log("Payment succeeded!");
+      if (result.error) {
+        console.log(result.error.message);
+      } else {
+        if (result.paymentIntent.status === "succeeded") {
+          console.log("Payment succeeded!");
+          console.log(result);
+
+          // mark camp as paid and also create payment history
+          const paymentData = {
+            campId,
+            email: user.email,
+            amount,
+            paymentMethod: result.paymentIntent.payment_method_types,
+            transactionId: result.paymentIntent.id,
+          };
+
+          const paymentRes = await axiosSecure.post("/payments", paymentData);
+
+          if (paymentRes.data.insertedId) {
+            Swal.fire({
+              icon: "success",
+              title: "Payment Successful",
+              timer: 2000,
+              showConfirmButton: false,
+            });
+          }
+        }
       }
     }
   };
