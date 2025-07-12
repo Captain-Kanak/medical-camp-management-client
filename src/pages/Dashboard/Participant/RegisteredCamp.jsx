@@ -3,13 +3,15 @@ import useAuth from "../../../hooks/useAuth";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
 import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
+import { Link, useNavigate } from "react-router";
 
-const RegistredCamp = () => {
+const RegisteredCamp = () => {
   const { user } = useAuth();
   const axiosPublic = useAxiosPublic();
+  const navigate = useNavigate();
 
-  const { data: registredCamps = [], refetch } = useQuery({
-    queryKey: ["registredCamps", user?.email],
+  const { data: registeredCamps = [], refetch } = useQuery({
+    queryKey: ["registeredCamps", user?.email],
     queryFn: async () => {
       const res = await axiosPublic.get(
         `/registered-camps?email=${user?.email}`
@@ -46,6 +48,10 @@ const RegistredCamp = () => {
     }
   };
 
+  const handlePay = (campId) => {
+    navigate(`/dashboard/payment/${campId}`);
+  };
+
   return (
     <div className="p-4">
       <h2 className="text-xl md:text-2xl font-bold mb-4">
@@ -65,7 +71,7 @@ const RegistredCamp = () => {
             </tr>
           </thead>
           <tbody>
-            {registredCamps.map((camp, index) => (
+            {registeredCamps.map((camp, index) => (
               <tr key={camp._id} className="hover">
                 <td className="px-4 py-2 border">{index + 1}</td>
                 <td className="px-4 py-2 border">{camp.campName}</td>
@@ -108,10 +114,19 @@ const RegistredCamp = () => {
                   >
                     Cancel
                   </button>
+                  <Link>
+                    <button
+                      onClick={() => handlePay(camp._id)}
+                      className="btn btn-xs btn-success"
+                      disabled={camp.payment_status === "paid"}
+                    >
+                      {camp.payment_status === "paid" ? "Paid" : "Pay"}
+                    </button>
+                  </Link>
                 </td>
               </tr>
             ))}
-            {registredCamps.length === 0 && (
+            {registeredCamps.length === 0 && (
               <tr>
                 <td colSpan="7" className="text-center py-4 text-gray-500">
                   You haven’t registered for any camps yet.
@@ -125,4 +140,4 @@ const RegistredCamp = () => {
   );
 };
 
-export default RegistredCamp;
+export default RegisteredCamp;

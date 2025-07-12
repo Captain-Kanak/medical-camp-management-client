@@ -14,7 +14,7 @@ const ManageRegisteredCamps = () => {
   } = useQuery({
     queryKey: ["registeredCamps"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/camps-registred");
+      const res = await axiosSecure.get("/camps-registered");
       return res.data;
     },
   });
