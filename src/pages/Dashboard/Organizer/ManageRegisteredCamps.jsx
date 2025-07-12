@@ -111,7 +111,16 @@ const ManageRegisteredCamps = () => {
                 <td className="px-4 py-2 border-b border-gray-300 md:border md:border-gray-300 block md:table-cell text-center">
                   <button
                     onClick={() => handleCancel(camp._id, camp.campId)}
-                    className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 mt-2 md:mt-0 cursor-pointer"
+                    disabled={
+                      camp.payment_status === "paid" ||
+                      camp.confirmation_status === "confirmed"
+                    }
+                    className={`bg-red-500 text-white px-3 py-1 rounded mt-2 md:mt-0 ${
+                      camp.payment_status === "paid" ||
+                      camp.confirmation_status === "confirmed"
+                        ? "opacity-50"
+                        : "cursor-pointer"
+                    }`}
                   >
                     Cancel
                   </button>

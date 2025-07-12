@@ -57,7 +57,7 @@ const RegisteredCamp = () => {
       <h2 className="text-xl md:text-2xl font-bold mb-4">
         My Registered Camps
       </h2>
-      <div className="overflow-x-auto rounded-lg border border-gray-200">
+      <div className="overflow-x-auto border border-gray-200">
         <table className="table w-full text-sm md:text-base">
           <thead className="bg-base-200 text-left">
             <tr>
@@ -99,30 +99,45 @@ const RegisteredCamp = () => {
                     {camp.confirmation_status}
                   </span>
                 </td>
-                <td className="px-4 py-2 border space-x-2 text-center">
-                  <button
-                    onClick={() =>
-                      alert("Feedback functionality not implemented yet")
-                    }
-                    className="btn btn-xs btn-info"
-                  >
-                    Feedback
-                  </button>
-                  <button
-                    onClick={() => handleCancel(camp._id, camp.campId)}
-                    className="btn btn-xs btn-error"
-                  >
-                    Cancel
-                  </button>
-                  <Link>
+                <td className="px-4 py-2 border">
+                  <div className="flex flex-col md:flex-row items-center justify-center gap-2">
+                    {camp.payment_status === "paid" && (
+                      <button
+                        onClick={() =>
+                          alert("Feedback functionality not implemented yet")
+                        }
+                        className="btn btn-xs btn-info"
+                      >
+                        Feedback
+                      </button>
+                    )}
+                    <button
+                      onClick={() => handleCancel(camp._id, camp.campId)}
+                      disabled={
+                        camp.payment_status === "paid" ||
+                        camp.confirmation_status === "confirmed"
+                      }
+                      className={`btn btn-xs ${
+                        camp.payment_status === "paid" ||
+                        camp.confirmation_status === "confirmed"
+                          ? "btn-disabled bg-gray-300 text-gray-600"
+                          : "btn-error cursor-pointer"
+                      }`}
+                    >
+                      Cancel
+                    </button>
                     <button
                       onClick={() => handlePay(camp._id)}
-                      className="btn btn-xs btn-success"
+                      className={`btn btn-xs ${
+                        camp.payment_status === "paid"
+                          ? "btn-disabled bg-gray-300 text-gray-600"
+                          : "btn-success"
+                      }`}
                       disabled={camp.payment_status === "paid"}
                     >
                       {camp.payment_status === "paid" ? "Paid" : "Pay"}
                     </button>
-                  </Link>
+                  </div>
                 </td>
               </tr>
             ))}
