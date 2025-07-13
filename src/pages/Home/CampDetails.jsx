@@ -6,11 +6,13 @@ import useAxiosPublic from "../../hooks/useAxiosPublic";
 import Spinner from "../../components/Spinner";
 import useAuth from "../../hooks/useAuth";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const CampDetails = () => {
   const { user } = useAuth();
   const { campId } = useParams();
   const axiosPublic = useAxiosPublic();
+  const axiosSecure = useAxiosSecure();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const {
@@ -37,7 +39,7 @@ const CampDetails = () => {
     console.log("Form Data:", data);
 
     // Optional: send to backend
-    const res = await axiosPublic.post("/camp-registration", {
+    const res = await axiosSecure.post("/camp-registration", {
       ...data,
       campId,
     });

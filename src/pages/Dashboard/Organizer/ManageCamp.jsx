@@ -83,7 +83,7 @@ const ManageCamp = () => {
     };
 
     try {
-      const res = await axiosSecure.put(
+      const res = await axiosSecure.patch(
         `/update-camp/${editingCamp._id}`,
         updateCamp
       );

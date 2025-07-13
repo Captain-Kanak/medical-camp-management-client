@@ -1,19 +1,19 @@
 import React from "react";
 import useAuth from "../../../hooks/useAuth";
-import useAxiosPublic from "../../../hooks/useAxiosPublic";
 import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const RegisteredCamp = () => {
   const { user } = useAuth();
-  const axiosPublic = useAxiosPublic();
+  const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
 
   const { data: registeredCamps = [], refetch } = useQuery({
     queryKey: ["registeredCamps", user?.email],
     queryFn: async () => {
-      const res = await axiosPublic.get(
+      const res = await axiosSecure.get(
         `/registered-camps?email=${user?.email}`
       );
       return res.data;
@@ -31,7 +31,7 @@ const RegisteredCamp = () => {
 
     if (result.isConfirmed) {
       try {
-        const res = await axiosPublic.delete(
+        const res = await axiosSecure.delete(
           `/cancel-registration/${id}?campId=${campId}`
         );
         if (res.data.deletedCount > 0) {
