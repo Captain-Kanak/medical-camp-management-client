@@ -13,7 +13,10 @@ import ManageCamp from "../pages/Dashboard/Organizer/ManageCamp";
 import CampDetails from "../pages/Home/CampDetails";
 import ManageRegisteredCamps from "../pages/Dashboard/Organizer/ManageRegisteredCamps";
 import RegisteredCamp from "../pages/Dashboard/Participant/RegisteredCamp";
-import Payment from "../pages/Dashboard/Organizer/Payment/Payment";
+import Payment from "../pages/Dashboard/Payment/Payment";
+import Forbidden from "../pages/Error/Forbidden";
+import OrganizerRouter from "./OrganizerRouter";
+import PaymentHistory from "../pages/Dashboard/Participant/PaymentHistory";
 
 export const router = createBrowserRouter([
   {
@@ -29,8 +32,12 @@ export const router = createBrowserRouter([
         Component: AvailableCamp,
       },
       {
-        path: "/camp-details/:campId",
+        path: "camp-details/:campId",
         Component: CampDetails,
+      },
+      {
+        path: "forbidden",
+        Component: Forbidden,
       },
     ],
   },
@@ -63,15 +70,27 @@ export const router = createBrowserRouter([
       // organizer routes
       {
         path: "add-camp",
-        element: <AddCamp />,
+        element: (
+          <OrganizerRouter>
+            <AddCamp />
+          </OrganizerRouter>
+        ),
       },
       {
         path: "manage-camp",
-        element: <ManageCamp />,
+        element: (
+          <OrganizerRouter>
+            <ManageCamp />
+          </OrganizerRouter>
+        ),
       },
       {
         path: "manage-registered-camps",
-        element: <ManageRegisteredCamps />,
+        element: (
+          <OrganizerRouter>
+            <ManageRegisteredCamps />
+          </OrganizerRouter>
+        ),
       },
       // participant routes
       {
@@ -81,6 +100,10 @@ export const router = createBrowserRouter([
       {
         path: "payment/:campId",
         Component: Payment,
+      },
+      {
+        path: "payment-history",
+        Component: PaymentHistory,
       },
     ],
   },

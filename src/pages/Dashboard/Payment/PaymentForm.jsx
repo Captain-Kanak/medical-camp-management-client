@@ -2,9 +2,9 @@ import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { useParams } from "react-router";
-import Spinner from "../../../../components/Spinner";
-import useAxiosSecure from "../../../../hooks/useAxiosSecure";
-import useAuth from "../../../../hooks/useAuth";
+import Spinner from "../../../components/Spinner";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import useAuth from "../../../hooks/useAuth";
 import Swal from "sweetalert2";
 
 const PaymentForm = () => {
@@ -22,6 +22,8 @@ const PaymentForm = () => {
       return res.data;
     },
   });
+
+  console.log(camp);
 
   const amount = camp.fees;
   const amountInCents = amount * 100;
@@ -75,6 +77,7 @@ const PaymentForm = () => {
           // mark camp as paid and also create payment history
           const paymentData = {
             campId,
+            campName: camp.campName,
             email: user.email,
             amount,
             paymentMethod: result.paymentIntent.payment_method_types,
