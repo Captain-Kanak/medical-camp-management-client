@@ -17,6 +17,7 @@ import Payment from "../pages/Dashboard/Payment/Payment";
 import Forbidden from "../pages/Error/Forbidden";
 import OrganizerRouter from "./OrganizerRouter";
 import PaymentHistory from "../pages/Dashboard/Participant/PaymentHistory";
+import Analytics from "../pages/Dashboard/Participant/Analytics";
 
 export const router = createBrowserRouter([
   {
@@ -93,6 +94,10 @@ export const router = createBrowserRouter([
         ),
       },
       // participant routes
+      {
+        path: "analytics",
+        Component: Analytics,
+      },
       {
         path: "registered-camps",
         Component: RegisteredCamp,

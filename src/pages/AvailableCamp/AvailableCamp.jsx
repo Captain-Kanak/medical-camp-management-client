@@ -184,7 +184,7 @@ const AvailableCamp = () => {
           <button
             key={num}
             onClick={() => setPage(num + 1)}
-            className={`btn btn-sm ${page === num + 1 ? "btn-active" : ""}`}
+            className={`btn btn-sm ${page === num + 1 ? "btn-primary" : ""}`}
           >
             {num + 1}
           </button>

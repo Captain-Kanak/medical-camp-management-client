@@ -89,7 +89,7 @@ const DashboardLayout = () => {
             {!roleLoading && role === "participant" && (
               <>
                 <li>
-                  <NavLink className="text-lg">
+                  <NavLink to="/dashboard/analytics" className="text-lg">
                     <IoAnalyticsSharp /> Analytics
                   </NavLink>
                 </li>
