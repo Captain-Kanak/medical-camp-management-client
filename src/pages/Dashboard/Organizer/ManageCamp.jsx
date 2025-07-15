@@ -13,6 +13,8 @@ const ManageCamp = () => {
   const [uploading, setUploading] = useState(false);
   const [campImage, setCampImage] = useState("");
   const [editingCamp, setEditingCamp] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   const {
     register,
@@ -30,7 +32,10 @@ const ManageCamp = () => {
     },
   });
 
-  console.log(camps);
+  const totalPages = Math.ceil(camps.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentCamps = camps.slice(startIndex, endIndex);
 
   const handleEdit = (camp) => {
     setEditingCamp(camp);
@@ -128,58 +133,128 @@ const ManageCamp = () => {
     <div className="p-5">
       <h2 className="text-2xl font-bold mb-4">Manage Medical Camps</h2>
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-base-200 border border-gray-200 shadow-md rounded-md">
-          <thead>
-            <tr className="text-left text-sm uppercase">
-              <th className="px-4 py-2 border-b">#</th>
-              <th className="px-4 py-2 border-b">Name</th>
-              <th className="px-4 py-2 border-b">Date & Time</th>
-              <th className="px-4 py-2 border-b">Location</th>
-              <th className="px-4 py-2 border-b">Healthcare Professional</th>
-              <th className="px-4 py-2 border-b text-center">Actions</th>
+      <div className="w-full overflow-x-auto">
+        <table className="w-full min-w-[700px] bg-base-200 md:border md:border-gray-200 shadow-md rounded-md">
+          <thead className="hidden md:table-header-group bg-base-300">
+            <tr className="text-left text-sm uppercase md:border-b md:border-gray-300">
+              <th className="px-4 py-2 md:border-r md:border-gray-300">#</th>
+              <th className="px-4 py-2 md:border-r md:border-gray-300">Name</th>
+              <th className="px-4 py-2 md:border-r md:border-gray-300">
+                Date & Time
+              </th>
+              <th className="px-4 py-2 md:border-r md:border-gray-300">
+                Location
+              </th>
+              <th className="px-4 py-2 md:border-r md:border-gray-300">
+                Healthcare Professional
+              </th>
+              <th className="px-4 py-2 text-center">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {camps.map((camp, index) => (
-              <tr key={camp._id} className="text-sm">
-                <td className="px-4 py-2 border-b">{index + 1}</td>
-                <td className="px-4 py-2 border-b">{camp.campName}</td>
-                <td className="px-4 py-2 border-b">
+            {currentCamps.map((camp, index) => (
+              <tr
+                key={camp._id}
+                className="text-sm block md:table-row border-t border-gray-300 md:border-none"
+              >
+                <td className="px-4 py-2 block md:table-cell md:border md:border-gray-300">
+                  <span className="md:hidden font-semibold"># </span>
+                  {startIndex + index + 1}
+                </td>
+                <td className="px-4 py-2 block md:table-cell md:border md:border-gray-300">
+                  <span className="md:hidden font-semibold">Name: </span>
+                  {camp.campName}
+                </td>
+                <td className="px-4 py-2 block md:table-cell md:border md:border-gray-300">
+                  <span className="md:hidden font-semibold">Date & Time: </span>
                   {new Date(camp.datetime).toLocaleString("en-US", {
                     dateStyle: "medium",
                     timeStyle: "short",
                   })}
                 </td>
-                <td className="px-4 py-2 border-b">{camp.location}</td>
-                <td className="px-4 py-2 border-b">
+                <td className="px-4 py-2 block md:table-cell md:border md:border-gray-300">
+                  <span className="md:hidden font-semibold">Location: </span>
+                  {camp.location}
+                </td>
+                <td className="px-4 py-2 block md:table-cell md:border md:border-gray-300">
+                  <span className="md:hidden font-semibold">
+                    Professional:{" "}
+                  </span>
                   {camp.healthcareProfessional}
                 </td>
-                <td className="px-4 py-2 border-b text-center space-x-2 space-y-2">
-                  <button
-                    className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 cursor-pointer"
-                    onClick={() => handleEdit(camp)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(camp._id)}
-                    className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 cursor-pointer"
-                  >
-                    Delete
-                  </button>
+                <td className="px-4 py-2 block md:table-cell md:border md:border-gray-300 text-center">
+                  <div className="w-full flex md:justify-center justify-center md:flex-row flex-col items-center md:gap-2 gap-3 mt-2">
+                    <button
+                      className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 cursor-pointer"
+                      onClick={() => handleEdit(camp)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(camp._id)}
+                      className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 cursor-pointer"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
             {camps.length === 0 && (
-              <tr>
-                <td colSpan="6" className="text-center py-4 text-gray-500">
+              <tr className="block md:table-row">
+                <td
+                  colSpan="6"
+                  className="text-center py-4 text-gray-500 block md:table-cell"
+                >
                   No camps found.
                 </td>
               </tr>
             )}
           </tbody>
         </table>
+
+        {/* Pagination */}
+        <div className="flex justify-center mt-4 space-x-1 items-center flex-wrap">
+          <button
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+            className={`px-3 py-1 rounded ${
+              currentPage === 1
+                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                : "bg-blue-500 text-white hover:bg-blue-600 cursor-pointer"
+            }`}
+          >
+            Prev
+          </button>
+
+          {[...Array(totalPages).keys()].map((page) => (
+            <button
+              key={page}
+              onClick={() => setCurrentPage(page + 1)}
+              className={`px-3 py-1 rounded ${
+                currentPage === page + 1
+                  ? "bg-blue-500 text-white cursor-pointer"
+                  : "cursor-pointer"
+              }`}
+            >
+              {page + 1}
+            </button>
+          ))}
+
+          <button
+            onClick={() =>
+              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+            }
+            disabled={currentPage === totalPages}
+            className={`px-3 py-1 rounded ${
+              currentPage === totalPages
+                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                : "bg-blue-500 text-white hover:bg-blue-600 cursor-pointer"
+            }`}
+          >
+            Next
+          </button>
+        </div>
       </div>
 
       {/* Modal */}

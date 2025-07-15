@@ -13,6 +13,8 @@ const RegisteredCamp = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   // fetch the user’s registered camps
   const { data: registeredCamps = [], refetch } = useQuery({
@@ -24,6 +26,11 @@ const RegisteredCamp = () => {
       return data;
     },
   });
+
+  const totalPages = Math.ceil(registeredCamps.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentCamps = registeredCamps.slice(startIndex, endIndex);
 
   // feedback‑modal state
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
@@ -126,7 +133,7 @@ const RegisteredCamp = () => {
           </thead>
 
           <tbody>
-            {registeredCamps.map((camp, index) => (
+            {currentCamps.map((camp, index) => (
               <tr key={camp._id} className="hover">
                 <td className="px-4 py-2 border">{index + 1}</td>
                 <td className="px-4 py-2 border">{camp.campName}</td>
@@ -213,6 +220,49 @@ const RegisteredCamp = () => {
             )}
           </tbody>
         </table>
+
+        {/* Pagination */}
+        <div className="flex justify-center mt-4 space-x-1 items-center flex-wrap">
+          <button
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+            className={`px-3 py-1 rounded ${
+              currentPage === 1
+                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                : "bg-blue-500 text-white hover:bg-blue-600 cursor-pointer"
+            }`}
+          >
+            Prev
+          </button>
+
+          {[...Array(totalPages).keys()].map((page) => (
+            <button
+              key={page}
+              onClick={() => setCurrentPage(page + 1)}
+              className={`px-3 py-1 rounded ${
+                currentPage === page + 1
+                  ? "bg-blue-500 text-white cursor-pointer"
+                  : "cursor-pointer"
+              }`}
+            >
+              {page + 1}
+            </button>
+          ))}
+
+          <button
+            onClick={() =>
+              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+            }
+            disabled={currentPage === totalPages}
+            className={`px-3 py-1 rounded ${
+              currentPage === totalPages
+                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                : "bg-blue-500 text-white hover:bg-blue-600 cursor-pointer"
+            }`}
+          >
+            Next
+          </button>
+        </div>
       </div>
 
       {/* ------------------- feedback modal ------------------- */}
