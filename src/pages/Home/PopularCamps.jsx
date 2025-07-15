@@ -56,6 +56,10 @@ const PopularCamps = () => {
                   <strong>Location:</strong> {camp.location}
                 </p>
                 <p className="text-sm">
+                  <strong>Healthcare Professional:</strong>{" "}
+                  {camp.healthcareProfessional}
+                </p>
+                <p className="text-sm">
                   <strong>Fees:</strong> ${camp.fees}
                 </p>
                 <p className="text-sm">

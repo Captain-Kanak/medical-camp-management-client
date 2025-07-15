@@ -1,25 +1,73 @@
-import React from "react";
-import useAuth from "../../../hooks/useAuth";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 import { useQuery } from "@tanstack/react-query";
-import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
+import Swal from "sweetalert2";
+import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const RegisteredCamp = () => {
+  /* ------------------------------------------------------------------ */
+  /*                           hooks & state                            */
+  /* ------------------------------------------------------------------ */
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
 
+  // fetch the user’s registered camps
   const { data: registeredCamps = [], refetch } = useQuery({
     queryKey: ["registeredCamps", user?.email],
     queryFn: async () => {
-      const res = await axiosSecure.get(
+      const { data } = await axiosSecure.get(
         `/registered-camps?email=${user?.email}`
       );
-      return res.data;
+      return data;
     },
   });
 
+  // feedback‑modal state
+  const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
+  const [currentCampId, setCurrentCampId] = useState(null);
+
+  // react‑hook‑form for feedback
+  const { register, handleSubmit, reset } = useForm();
+
+  /* ------------------------------------------------------------------ */
+  /*                           event handlers                           */
+  /* ------------------------------------------------------------------ */
+  const openFeedbackModal = (campId) => {
+    setCurrentCampId(campId);
+    setIsFeedbackOpen(true);
+  };
+
+  const closeFeedbackModal = () => {
+    setIsFeedbackOpen(false);
+    setCurrentCampId(null);
+    reset();
+  };
+
+  // submit feedback to backend
+  const onSubmitFeedback = async (data) => {
+    const payload = {
+      feedback: data.feedback,
+      campId: currentCampId,
+      name: user.displayName,
+      email: user?.email,
+      createdAt: new Date().toISOString(),
+    };
+
+    try {
+      const res = await axiosSecure.post("/feedbacks", payload);
+      if (res.data.insertedId) {
+        Swal.fire("Thank you!", "Your feedback has been submitted.", "success");
+        closeFeedbackModal();
+      }
+    } catch (err) {
+      Swal.fire("Error", err.message || "Failed to submit feedback", "error");
+    }
+  };
+
+  // cancel registration
   const handleCancel = async (id, campId) => {
     const result = await Swal.fire({
       title: "Cancel Registration?",
@@ -31,10 +79,10 @@ const RegisteredCamp = () => {
 
     if (result.isConfirmed) {
       try {
-        const res = await axiosSecure.delete(
+        const { data } = await axiosSecure.delete(
           `/cancel-registration/${id}?campId=${campId}`
         );
-        if (res.data.deletedCount > 0) {
+        if (data.deletedCount > 0) {
           Swal.fire(
             "Cancelled!",
             "Registration has been cancelled.",
@@ -48,15 +96,21 @@ const RegisteredCamp = () => {
     }
   };
 
+  // pay fees
   const handlePay = (campId) => {
     navigate(`/dashboard/payment/${campId}`);
   };
 
+  /* ------------------------------------------------------------------ */
+  /*                               render                               */
+  /* ------------------------------------------------------------------ */
   return (
     <div className="p-4">
       <h2 className="text-xl md:text-2xl font-bold mb-4">
         My Registered Camps
       </h2>
+
+      {/* ------------------- camps table ------------------- */}
       <div className="overflow-x-auto border border-gray-200">
         <table className="table w-full text-sm md:text-base">
           <thead className="bg-base-200 text-left">
@@ -70,6 +124,7 @@ const RegisteredCamp = () => {
               <th className="px-4 py-2 border text-center">Actions</th>
             </tr>
           </thead>
+
           <tbody>
             {registeredCamps.map((camp, index) => (
               <tr key={camp._id} className="hover">
@@ -77,6 +132,7 @@ const RegisteredCamp = () => {
                 <td className="px-4 py-2 border">{camp.campName}</td>
                 <td className="px-4 py-2 border">${camp.fees}</td>
                 <td className="px-4 py-2 border">{camp.name}</td>
+
                 <td className="px-4 py-2 border">
                   <span
                     className={`badge ${
@@ -88,6 +144,7 @@ const RegisteredCamp = () => {
                     {camp.payment_status}
                   </span>
                 </td>
+
                 <td className="px-4 py-2 border">
                   <span
                     className={`badge ${
@@ -99,18 +156,20 @@ const RegisteredCamp = () => {
                     {camp.confirmation_status}
                   </span>
                 </td>
+
                 <td className="px-4 py-2 border">
                   <div className="flex flex-col md:flex-row items-center justify-center gap-2">
+                    {/* Feedback button (only visible if paid) */}
                     {camp.payment_status === "paid" && (
                       <button
-                        onClick={() =>
-                          alert("Feedback functionality not implemented yet")
-                        }
+                        onClick={() => openFeedbackModal(camp.campId)}
                         className="btn btn-xs btn-info"
                       >
                         Feedback
                       </button>
                     )}
+
+                    {/* Cancel button */}
                     <button
                       onClick={() => handleCancel(camp._id, camp.campId)}
                       disabled={
@@ -126,14 +185,16 @@ const RegisteredCamp = () => {
                     >
                       Cancel
                     </button>
+
+                    {/* Pay button */}
                     <button
                       onClick={() => handlePay(camp._id)}
+                      disabled={camp.payment_status === "paid"}
                       className={`btn btn-xs ${
                         camp.payment_status === "paid"
                           ? "btn-disabled bg-gray-300 text-gray-600"
                           : "btn-success"
                       }`}
-                      disabled={camp.payment_status === "paid"}
                     >
                       {camp.payment_status === "paid" ? "Paid" : "Pay"}
                     </button>
@@ -141,6 +202,8 @@ const RegisteredCamp = () => {
                 </td>
               </tr>
             ))}
+
+            {/* empty‑state row */}
             {registeredCamps.length === 0 && (
               <tr>
                 <td colSpan="7" className="text-center py-4 text-gray-500">
@@ -151,6 +214,40 @@ const RegisteredCamp = () => {
           </tbody>
         </table>
       </div>
+
+      {/* ------------------- feedback modal ------------------- */}
+      {isFeedbackOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+          <div className="bg-white p-6 w-full max-w-md rounded-lg shadow-lg">
+            <h3 className="text-xl font-bold mb-4">Submit Feedback</h3>
+
+            <form
+              onSubmit={handleSubmit(onSubmitFeedback)}
+              className="space-y-4"
+            >
+              <textarea
+                {...register("feedback", { required: true })}
+                placeholder="Your Feedback"
+                rows={4}
+                className="textarea textarea-bordered w-full"
+              />
+
+              <div className="flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={closeFeedbackModal}
+                  className="btn btn-ghost"
+                >
+                  Cancel
+                </button>
+                <button type="submit" className="btn btn-primary">
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
