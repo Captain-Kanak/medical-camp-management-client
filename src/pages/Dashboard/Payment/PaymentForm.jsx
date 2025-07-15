@@ -6,6 +6,7 @@ import Spinner from "../../../components/Spinner";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../hooks/useAuth";
 import Swal from "sweetalert2";
+import { toast } from "react-toastify";
 
 const PaymentForm = () => {
   const stripe = useStripe();
@@ -87,6 +88,7 @@ const PaymentForm = () => {
           const paymentRes = await axiosSecure.post("/payments", paymentData);
 
           if (paymentRes.data.insertedId) {
+            toast.success(`Transaction ID: ${result.paymentIntent.id}`);
             Swal.fire({
               icon: "success",
               title: "Payment Successful",

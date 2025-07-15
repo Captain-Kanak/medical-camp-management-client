@@ -7,6 +7,8 @@ import useUserRole from "../hooks/useUserRole";
 import { IoAnalyticsSharp } from "react-icons/io5";
 import { FaCampground, FaPlusCircle } from "react-icons/fa";
 import { HiOutlineClipboardList } from "react-icons/hi";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const DashboardLayout = () => {
   const { role, roleLoading } = useUserRole();
@@ -108,6 +110,7 @@ const DashboardLayout = () => {
           </ul>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };
