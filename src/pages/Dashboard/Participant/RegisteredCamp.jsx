@@ -135,7 +135,7 @@ const RegisteredCamp = () => {
           <tbody>
             {currentCamps.map((camp, index) => (
               <tr key={camp._id} className="hover">
-                <td className="px-4 py-2 border">{index + 1}</td>
+                <td className="px-4 py-2 border">{startIndex + index + 1}</td>
                 <td className="px-4 py-2 border">{camp.campName}</td>
                 <td className="px-4 py-2 border">${camp.fees}</td>
                 <td className="px-4 py-2 border">{camp.name}</td>

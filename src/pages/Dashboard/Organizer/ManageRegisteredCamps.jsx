@@ -91,7 +91,7 @@ const ManageRegisteredCamps = () => {
               >
                 <td className="px-4 py-2 block border-l border-r border-gray-300 md:table-cell md:border md:border-gray-300">
                   <span className="md:hidden font-semibold"># </span>
-                  {index + 1}
+                  {startIndex + index + 1}
                 </td>
                 <td className="px-4 py-2 block border-l border-r border-gray-300 md:table-cell md:border md:border-gray-300">
                   <span className="md:hidden font-semibold">Camp Name: </span>

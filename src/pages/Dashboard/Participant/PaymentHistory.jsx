@@ -63,7 +63,7 @@ const PaymentHistory = () => {
                 {currentPayments.map((payment, index) => (
                   <tr key={payment._id} className="text-sm text-gray-800">
                     <td className="py-2 px-4 border border-gray-300">
-                      {index + 1}
+                      {startIndex + index + 1}
                     </td>
                     <td className="py-2 px-4 border border-gray-300">
                       {payment.campName}
@@ -91,7 +91,8 @@ const PaymentHistory = () => {
                 className="border border-gray-300 rounded-md p-4 shadow-sm bg-white"
               >
                 <p className="text-sm">
-                  <span className="font-semibold">#:</span> {index + 1}
+                  <span className="font-semibold">#:</span>{" "}
+                  {startIndex + index + 1}
                 </p>
                 <p className="text-sm">
                   <span className="font-semibold">Camp Name:</span>{" "}
