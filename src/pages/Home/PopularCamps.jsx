@@ -42,6 +42,7 @@ const PopularCamps = () => {
         {camps.map((camp) => (
           <div
             key={camp._id}
+            data-aos="fade-up" data-aos-anchor-placement="top-center"
             className="border shadow rounded-lg overflow-hidden flex flex-col"
           >
             <img

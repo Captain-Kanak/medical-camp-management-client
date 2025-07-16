@@ -3,10 +3,12 @@ import useAuth from "../../../hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Spinner from "../../../components/Spinner";
+import SearchBar from "../../../components/SearchBar";
 
 const PaymentHistory = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
+  const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
@@ -18,10 +20,17 @@ const PaymentHistory = () => {
     },
   });
 
-  const totalPages = Math.ceil(payments.length / itemsPerPage);
+  const filteredCamps = payments.filter((camp) =>
+    ["campName", "name", "payment_status", "confirmation_status"].some(
+      (field) =>
+        camp[field]?.toString().toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  );
+
+  const totalPages = Math.ceil(filteredCamps.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentPayments = payments.slice(startIndex, endIndex);
+  const currentPayments = filteredCamps.slice(startIndex, endIndex);
 
   if (isLoading) {
     return <Spinner />;
@@ -32,6 +41,13 @@ const PaymentHistory = () => {
       <h2 className="text-2xl font-semibold mb-4 text-center">
         Payment History
       </h2>
+
+      <SearchBar
+        value={searchTerm}
+        onChange={setSearchTerm}
+        placeholder="Search by camp name, participant, or status"
+      />
+
       {payments.length === 0 ? (
         <p className="text-center text-gray-500">
           No payment history available.

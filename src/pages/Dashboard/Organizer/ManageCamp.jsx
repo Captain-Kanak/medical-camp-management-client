@@ -6,6 +6,8 @@ import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import Spinner from "../../../components/Spinner";
+import SearchBar from "../../../components/SearchBar";
 
 const ManageCamp = () => {
   const axiosSecure = useAxiosSecure();
@@ -13,6 +15,7 @@ const ManageCamp = () => {
   const [uploading, setUploading] = useState(false);
   const [campImage, setCampImage] = useState("");
   const [editingCamp, setEditingCamp] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
@@ -24,7 +27,11 @@ const ManageCamp = () => {
     formState: { errors },
   } = useForm();
 
-  const { data: camps = [], refetch } = useQuery({
+  const {
+    data: camps = [],
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["camps"],
     queryFn: async () => {
       const res = await axiosSecure.get("/camps");
@@ -32,10 +39,17 @@ const ManageCamp = () => {
     },
   });
 
-  const totalPages = Math.ceil(camps.length / itemsPerPage);
+  const filteredCamps = camps.filter((camp) =>
+    ["campName", "name", "payment_status", "confirmation_status"].some(
+      (field) =>
+        camp[field]?.toString().toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  );
+
+  const totalPages = Math.ceil(filteredCamps.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentCamps = camps.slice(startIndex, endIndex);
+  const currentCamps = filteredCamps.slice(startIndex, endIndex);
 
   const handleEdit = (camp) => {
     setEditingCamp(camp);
@@ -129,9 +143,19 @@ const ManageCamp = () => {
     }
   };
 
+  if (isLoading) {
+    return <Spinner />;
+  }
+
   return (
     <div className="p-5">
-      <h2 className="text-2xl font-bold mb-4">Manage Medical Camps</h2>
+      <h2 className="text-2xl font-bold mb-4 text-center">Manage Medical Camps</h2>
+
+      <SearchBar
+        value={searchTerm}
+        onChange={setSearchTerm}
+        placeholder="Search by camp name, participant, or status"
+      />
 
       <div className="w-full overflow-x-auto">
         <table className="w-full min-w-[700px] bg-base-200 md:border md:border-gray-200 shadow-md rounded-md">

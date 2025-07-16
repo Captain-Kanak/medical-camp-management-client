@@ -3,9 +3,11 @@ import React, { useState } from "react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import Spinner from "../../../components/Spinner";
+import SearchBar from "../../../components/SearchBar";
 
 const ManageRegisteredCamps = () => {
   const axiosSecure = useAxiosSecure();
+  const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
@@ -21,10 +23,17 @@ const ManageRegisteredCamps = () => {
     },
   });
 
-  const totalPages = Math.ceil(registeredCamps.length / itemsPerPage);
+  const filteredCamps = registeredCamps.filter((camp) =>
+    ["campName", "name", "payment_status", "confirmation_status"].some(
+      (field) =>
+        camp[field]?.toString().toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  );
+
+  const totalPages = Math.ceil(filteredCamps.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentCamps = registeredCamps.slice(startIndex, endIndex);
+  const currentCamps = filteredCamps.slice(startIndex, endIndex);
 
   const handleCancel = async (id, campId) => {
     const result = await Swal.fire({
@@ -60,7 +69,13 @@ const ManageRegisteredCamps = () => {
 
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4">Registered Camps</h2>
+      <h2 className="text-2xl font-bold mb-4 text-center">Registered Camps</h2>
+
+      <SearchBar
+        value={searchTerm}
+        onChange={setSearchTerm}
+        placeholder="Search by camp name, participant, or status"
+      />
 
       <div className="overflow-x-auto">
         <table className="min-w-full bg-base-200 shadow-md rounded-md md:border md:border-gray-300">

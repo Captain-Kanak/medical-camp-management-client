@@ -5,6 +5,8 @@ import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import Spinner from "../../../components/Spinner";
+import SearchBar from "../../../components/SearchBar";
 
 const RegisteredCamp = () => {
   /* ------------------------------------------------------------------ */
@@ -13,11 +15,16 @@ const RegisteredCamp = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
   // fetch the user’s registered camps
-  const { data: registeredCamps = [], refetch } = useQuery({
+  const {
+    data: registeredCamps = [],
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["registeredCamps", user?.email],
     queryFn: async () => {
       const { data } = await axiosSecure.get(
@@ -27,10 +34,17 @@ const RegisteredCamp = () => {
     },
   });
 
-  const totalPages = Math.ceil(registeredCamps.length / itemsPerPage);
+  const filteredCamps = registeredCamps.filter((camp) =>
+    ["campName", "name", "payment_status", "confirmation_status"].some(
+      (field) =>
+        camp[field]?.toString().toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  );
+
+  const totalPages = Math.ceil(filteredCamps.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentCamps = registeredCamps.slice(startIndex, endIndex);
+  const currentCamps = filteredCamps.slice(startIndex, endIndex);
 
   // feedback‑modal state
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
@@ -108,14 +122,24 @@ const RegisteredCamp = () => {
     navigate(`/dashboard/payment/${campId}`);
   };
 
+  if (isLoading) {
+    return <Spinner />;
+  }
+
   /* ------------------------------------------------------------------ */
   /*                               render                               */
   /* ------------------------------------------------------------------ */
   return (
     <div className="p-4">
-      <h2 className="text-xl md:text-2xl font-bold mb-4">
+      <h2 className="text-xl md:text-2xl font-bold mb-4 text-center">
         My Registered Camps
       </h2>
+
+      <SearchBar
+        value={searchTerm}
+        onChange={setSearchTerm}
+        placeholder="Search by camp name, participant, or status"
+      />
 
       {/* ------------------- camps table ------------------- */}
       <div className="overflow-x-auto border border-gray-200">
