@@ -29,15 +29,18 @@ const PopularCamps = () => {
     );
 
   return (
-    <div className="py-8 lg:py-16 max-w-7xl mx-auto px-4 lg:px-0">
-      <h2 className="text-3xl font-bold mb-3 text-center">
-        Popular Medical Camps
-      </h2>
-      <p className="text-center text-sm max-w-2xl mx-auto mb-6">
-        Discover our most popular medical camps based on participant interest.
-        These top-rated camps offer quality healthcare services at various
-        locations and are trusted by our community.
-      </p>
+    <div className="pt-8 lg:pt-16 max-w-7xl mx-auto px-4 lg:px-0">
+      {/* Section Heading */}
+      <div className="text-center mb-10">
+        <h2 className="text-3xl lg:text-4xl font-extrabold">
+          Popular Medical Camps
+        </h2>
+        <p className="mt-3 text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+          Discover our most popular medical camps based on participant interest.
+          These top-rated camps offer quality healthcare services at various
+          locations and are trusted by our community.
+        </p>
+      </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {camps.map((camp) => (
@@ -45,7 +48,7 @@ const PopularCamps = () => {
         ))}
       </div>
 
-      <div className="flex items-center justify-center my-5">
+      <div className="flex items-center justify-center mt-5">
         <Link to="/available-camp">
           <button className="px-5 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold shadow-md hover:scale-105 transition-transform duration-300 cursor-pointer">
             See All Camps

@@ -66,7 +66,7 @@ const AvailableCamp = () => {
     <div className="px-4 py-12 max-w-7xl mx-auto">
       {/* Section Heading */}
       <div className="text-center mb-10">
-        <h2 className="text-4xl font-extrabold bg-gradient-to-r from-blue-500 to-green-500 bg-clip-text text-transparent">
+        <h2 className="text-3xl lg:text-4xl font-extrabold">
           Available Camps
         </h2>
         <p className="mt-3 text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
@@ -74,7 +74,6 @@ const AvailableCamp = () => {
           professionals. Join a camp near you to promote better health and
           wellness in your community.
         </p>
-        <div className="mt-4 h-1 w-20 mx-auto bg-gradient-to-r from-blue-500 to-green-500 rounded-full"></div>
       </div>
 
       {/* Search + Sort Controls */}

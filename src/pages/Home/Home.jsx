@@ -6,12 +6,12 @@ import Feedbacks from "./Feedbacks";
 
 const Home = () => {
   return (
-    <div>
+    <>
       <Banner />
       <PopularCamps />
-      <Feedbacks />
       <HealthTips />
-    </div>
+      <Feedbacks />
+    </>
   );
 };
 
