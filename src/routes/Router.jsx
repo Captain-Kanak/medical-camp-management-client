@@ -18,6 +18,8 @@ import Forbidden from "../pages/Error/Forbidden";
 import OrganizerRouter from "./OrganizerRouter";
 import PaymentHistory from "../pages/Dashboard/Participant/PaymentHistory";
 import Analytics from "../pages/Dashboard/Participant/Analytics";
+import AboutUs from "../pages/about/AboutUs";
+import Contact from "../pages/contact/Contact";
 
 export const router = createBrowserRouter([
   {
@@ -27,6 +29,14 @@ export const router = createBrowserRouter([
       {
         index: true,
         Component: Home,
+      },
+      {
+        path: "/about",
+        Component: AboutUs,
+      },
+      {
+        path: "/contact",
+        Component: Contact,
       },
       {
         path: "available-camp",
