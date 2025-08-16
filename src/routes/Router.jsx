@@ -31,11 +31,11 @@ export const router = createBrowserRouter([
         Component: Home,
       },
       {
-        path: "/about",
+        path: "about",
         Component: AboutUs,
       },
       {
-        path: "/contact",
+        path: "contact",
         Component: Contact,
       },
       {

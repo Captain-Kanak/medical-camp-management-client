@@ -6,7 +6,7 @@ import Spinner from "../../../components/Spinner";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../hooks/useAuth";
 import Swal from "sweetalert2";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 
 const PaymentForm = () => {
   const stripe = useStripe();

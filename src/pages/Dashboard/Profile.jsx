@@ -22,21 +22,11 @@ const Profile = () => {
 
   const onSubmit = async (data) => {
     const photoURL = profilePic || user?.photoURL;
-
-    const userProfile = {
-      displayName: data.name,
-      photoURL,
-    };
+    const userProfile = { displayName: data.name, photoURL };
 
     try {
       await updateUserProfile(userProfile);
-
-      const userInfo = {
-        email: data.email,
-        name: data.name,
-        photo: photoURL,
-      };
-
+      const userInfo = { email: data.email, name: data.name, photo: photoURL };
       const res = await axiosPublic.patch("/users/profile-update", userInfo);
 
       if (res.data.modifiedCount > 0 || res.data.upsertedCount > 0) {
@@ -55,10 +45,7 @@ const Profile = () => {
   };
 
   const openModal = () => {
-    reset({
-      name: user?.displayName || "",
-      email: user?.email || "",
-    });
+    reset({ name: user?.displayName || "", email: user?.email || "" });
     setProfilePic("");
     setIsModalOpen(true);
   };
@@ -78,9 +65,7 @@ const Profile = () => {
       setUploading(true);
       const res = await axios.post(imageUploadUrl, formData);
       const url = res.data?.data?.url;
-      if (url) {
-        setProfilePic(url);
-      }
+      if (url) setProfilePic(url);
     } catch (error) {
       console.error("Image upload failed:", error);
       Swal.fire("Upload Error", "Image upload failed.", "error");
@@ -90,88 +75,94 @@ const Profile = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 p-4">
-      <h2 className="text-2xl font-bold mb-4 text-center">Your Profile</h2>
+    <div className="min-h-screen flex flex-col items-center bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-6">
+      <h2 className="text-4xl font-extrabold mb-10 text-white drop-shadow-xl text-center">
+        Your Profile
+      </h2>
 
-      <div className="bg-base-200 shadow rounded-lg p-6">
-        <div className="flex flex-col items-center space-x-4 mb-4">
+      {/* Profile Card */}
+      <div className="bg-white/20 backdrop-blur-lg shadow-2xl rounded-3xl p-8 flex flex-col items-center gap-4 w-full max-w-md border border-white/30">
+        <div className="relative group">
           <img
             src={user?.photoURL || userImage}
             alt="User Avatar"
-            className="w-32 h-32 rounded-full object-cover border-4 border-blue-500"
+            className="w-32 h-32 rounded-full object-cover ring-4 ring-indigo-400/60 shadow-lg transition-transform duration-300 group-hover:scale-105"
           />
-          <div className="mt-2">
-            <h3 className="text-xl text-center font-semibold">
-              {user?.displayName}
-            </h3>
-            <p className="text-center">{user?.email}</p>
-          </div>
+          <span className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full animate-pulse"></span>
         </div>
 
-        <div className="text-center">
-          <button
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer"
-            onClick={openModal}
-          >
-            Update Profile
-          </button>
-        </div>
+        <h3 className="text-2xl font-semibold text-white drop-shadow-md">
+          {user?.displayName}
+        </h3>
+        <p className="text-white/80">{user?.email}</p>
+
+        <button
+          className="mt-4 px-6 py-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold shadow-lg hover:scale-105 transition-transform duration-300"
+          onClick={openModal}
+        >
+          Update Profile
+        </button>
       </div>
 
       {/* Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="rounded-lg bg-base-200 shadow-lg w-full max-w-md p-6 relative">
-            <h3 className="text-xl font-bold mb-4">Update Profile</h3>
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4 animate-fadeIn">
+          <div className="rounded-2xl bg-white/20 backdrop-blur-xl shadow-2xl w-full max-w-md p-6 relative border border-white/30 transform transition-transform duration-300 scale-100">
+            <h3 className="text-2xl font-bold mb-5 text-center text-white drop-shadow-md">
+              Update Profile
+            </h3>
+
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-              {/* name field */}
+              {/* Name */}
               <div>
-                <label className="block text-sm font-medium">Name</label>
+                <label className="block text-sm font-medium mb-1 text-white">
+                  Name
+                </label>
                 <input
                   {...register("name", { required: "Name is required" })}
                   type="text"
-                  className="w-full border px-3 py-2 rounded"
+                  className="w-full px-4 py-2 rounded-lg bg-indigo-500/30 text-white placeholder-white/70 border border-white/30 focus:ring-2 focus:ring-indigo-300 transition shadow-md"
                 />
                 {errors.name && (
-                  <p className="text-red-500 text-sm mt-1">
+                  <p className="text-red-300 text-sm mt-1">
                     {errors.name.message}
                   </p>
                 )}
               </div>
 
-              {/* image field */}
+              {/* Image */}
               <div>
-                <label className="block text-sm font-medium">
+                <label className="block text-sm font-medium mb-1 text-white">
                   Upload Photo
                 </label>
                 <input
                   type="file"
                   onChange={handleImageUpload}
-                  className="w-full file-input file-input-bordered mt-1"
-                  required
+                  className="file-input file-input-bordered w-full bg-indigo-500/30 border-white/30 text-white"
                 />
                 {uploading && (
-                  <p className="text-sm text-yellow-600">Uploading...</p>
+                  <p className="text-yellow-200 text-sm mt-1">Uploading...</p>
                 )}
               </div>
 
-              {/* email field */}
+              {/* Email */}
               <div>
-                <label className="block text-sm font-medium">
+                <label className="block text-sm font-medium mb-1 text-white">
                   Email (read-only)
                 </label>
                 <input
                   {...register("email")}
                   type="email"
                   disabled
-                  className="w-full border px-3 py-2 rounded"
+                  className="w-full px-4 py-2 rounded-lg bg-white/20 text-white border border-white/30"
                 />
               </div>
 
-              <div className="flex justify-end gap-2 mt-6">
+              {/* Buttons */}
+              <div className="flex justify-end gap-3 mt-6">
                 <button
                   type="button"
-                  className="px-4 py-2 bg-gray-300 text-black rounded cursor-pointer"
+                  className="px-4 py-2 rounded-full bg-red-500 hover:bg-red-400 text-white font-semibold transition"
                   onClick={() => setIsModalOpen(false)}
                 >
                   Cancel
@@ -179,10 +170,10 @@ const Profile = () => {
                 <button
                   type="submit"
                   disabled={uploading}
-                  className={`cursor-pointer px-4 py-2 rounded text-white ${
+                  className={`px-4 py-2 rounded-full text-white font-semibold transition transform ${
                     uploading
                       ? "bg-gray-400 cursor-not-allowed"
-                      : "bg-blue-600 hover:bg-blue-700"
+                      : "bg-gradient-to-r from-indigo-500 to-purple-600 hover:scale-105"
                   }`}
                 >
                   {uploading ? "Uploading..." : "Save Changes"}

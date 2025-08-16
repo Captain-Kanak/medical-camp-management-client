@@ -104,7 +104,7 @@ const AboutUs = () => {
           professional, or supporter, your contribution makes a difference.
         </p>
         <Link
-          to="/signin"
+          to="/available-camp"
           className="inline-block px-8 py-3 font-semibold text-white bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg shadow-lg hover:scale-105 transition-transform duration-300"
         >
           Join Us

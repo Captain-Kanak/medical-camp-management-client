@@ -1,6 +1,32 @@
 import React from "react";
+import toast from "react-hot-toast";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const Contact = () => {
+  const axiosPublic = useAxiosPublic();
+
+  const handleMessageSubmit = async (e) => {
+    e.preventDefault();
+
+    const form = e.target;
+    const name = form.name.value.trim();
+    const email = form.email.value.trim();
+    const message = form.message.value.trim();
+
+    const messageInfo = { name, email, message };
+
+    try {
+      const res = await axiosPublic.post("/messages", messageInfo);
+      if (res.data.insertedId) {
+        toast.success("Message sent successfully!");
+        form.reset();
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to send message. Try again later.");
+    }
+  };
+
   return (
     <div className="pt-8 lg:pt-16 pb-16 lg:pb-24 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
       {/* Page Header */}
@@ -32,29 +58,38 @@ const Contact = () => {
 
       {/* Contact Form */}
       <section className="max-w-3xl mx-auto px-4 lg:px-0">
-        <form className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-8 space-y-6">
+        <form
+          onSubmit={handleMessageSubmit}
+          className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-8 space-y-6"
+        >
           <div>
             <label className="block mb-2 font-medium">Name</label>
             <input
               type="text"
+              name="name"
               placeholder="Your Name"
               className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-indigo-600"
+              required
             />
           </div>
           <div>
             <label className="block mb-2 font-medium">Email</label>
             <input
               type="email"
+              name="email"
               placeholder="Your Email"
               className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-indigo-600"
+              required
             />
           </div>
           <div>
             <label className="block mb-2 font-medium">Message</label>
             <textarea
               rows={5}
+              name="message"
               placeholder="Your Message"
               className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-indigo-600"
+              required
             ></textarea>
           </div>
           <button
