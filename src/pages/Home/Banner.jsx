@@ -9,13 +9,12 @@ import photo5 from "../../assets/banner/photo5.jpg";
 
 const Banner = () => {
   return (
-    <div className="mb-10">
+    <div className="mt-8 max-w-7xl mx-auto px-4 lg:px-0">
       <Carousel
         autoPlay={true}
         infiniteLoop={true}
         interval={3000}
         showThumbs={false}
-        className="mt-10 px-4 lg:px-0"
       >
         <div>
           <img

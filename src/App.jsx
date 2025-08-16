@@ -8,12 +8,10 @@ import "react-toastify/dist/ReactToastify.css";
 function App() {
   return (
     <>
-      <div className="max-w-7xl mx-auto">
-        <Navbar />
-        <Outlet />
-        <Footer />
-        <ToastContainer />
-      </div>
+      <Navbar />
+      <Outlet />
+      <Footer />
+      <ToastContainer />
     </>
   );
 }

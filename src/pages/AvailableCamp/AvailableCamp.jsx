@@ -1,18 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useState, useMemo } from "react";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
-import { Link } from "react-router";
-import { HiViewColumns } from "react-icons/hi2";
-import { HiViewGrid } from "react-icons/hi";
 import Spinner from "../../components/Spinner";
+import CampCard from "../../components/CampCard";
 
 const AvailableCamp = () => {
   const axiosPublic = useAxiosPublic();
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("");
-  const [isThreeColumn, setIsThreeColumn] = useState(true);
-  const limit = 9;
+  const limit = 12;
 
   const {
     data: campsData = [],
@@ -30,7 +27,7 @@ const AvailableCamp = () => {
 
   const { camps = [], totalPages } = campsData;
 
-  // Filtered + Sorted Camps
+  // Filter + Sort
   const filteredAndSortedCamps = useMemo(() => {
     let filtered = camps.filter((camp) => {
       const lowerSearch = searchTerm.toLowerCase();
@@ -66,119 +63,59 @@ const AvailableCamp = () => {
     );
 
   return (
-    <div className="px-4 py-10 max-w-7xl mx-auto">
-      <h2 className="text-3xl font-bold text-center mb-8">Available Camps</h2>
-      <p className="text-center max-w-2xl mx-auto mb-6">
-        Explore our curated selection of upcoming medical camps designed to
-        promote better health and wellness in your community. Each camp is led
-        by trusted healthcare professionals and offers accessible services
-        across various locations.
-      </p>
+    <div className="px-4 py-12 max-w-7xl mx-auto">
+      {/* Section Heading */}
+      <div className="text-center mb-10">
+        <h2 className="text-4xl font-extrabold bg-gradient-to-r from-blue-500 to-green-500 bg-clip-text text-transparent">
+          Available Camps
+        </h2>
+        <p className="mt-3 text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+          Discover our upcoming medical camps led by trusted healthcare
+          professionals. Join a camp near you to promote better health and
+          wellness in your community.
+        </p>
+        <div className="mt-4 h-1 w-20 mx-auto bg-gradient-to-r from-blue-500 to-green-500 rounded-full"></div>
+      </div>
 
-      {/* Search and Sort Controls */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
+      {/* Search + Sort Controls */}
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-10">
         <input
           type="text"
-          placeholder="Search by keyword, location, or date"
+          placeholder="🔍 Search by keyword, location, or date..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="input input-bordered w-full sm:w-1/2"
+          className="input input-bordered w-full sm:w-1/2 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
 
-        <div className="flex items-center gap-2">
-          <select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-            className="select select-bordered"
-          >
-            <option value="">Sort By</option>
-            <option value="mostRegistered">Most Registered</option>
-            <option value="fees">Camp Fees</option>
-            <option value="alphabetical">Camp Name (A-Z)</option>
-          </select>
-
-          <button
-            className="btn btn-outline flex items-center gap-2"
-            onClick={() => setIsThreeColumn((prev) => !prev)}
-          >
-            {isThreeColumn ? (
-              <>
-                <HiViewGrid className="text-lg" />2 Column View
-              </>
-            ) : (
-              <>
-                <HiViewColumns className="text-lg" />3 Column View
-              </>
-            )}
-          </button>
-        </div>
+        <select
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value)}
+          className="select select-bordered rounded-xl shadow-sm"
+        >
+          <option value="">Sort By</option>
+          <option value="mostRegistered">Most Registered</option>
+          <option value="fees">Camp Fees</option>
+          <option value="alphabetical">Camp Name (A-Z)</option>
+        </select>
       </div>
 
       {/* Camp Cards */}
-      <div
-        className={`grid gap-6 ${
-          isThreeColumn
-            ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
-            : "grid-cols-1 sm:grid-cols-2"
-        }`}
-      >
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {filteredAndSortedCamps.length === 0 ? (
           <p className="text-center col-span-full text-gray-500">
             No camps found.
           </p>
         ) : (
           filteredAndSortedCamps.map((camp) => (
-            <div
-              key={camp._id}
-              data-aos="fade-up" data-aos-anchor-placement="top-center"
-              className="border shadow rounded-lg overflow-hidden flex flex-col"
-            >
-              <img
-                src={camp.image}
-                alt={camp.campName}
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-4 flex-grow flex flex-col justify-between">
-                <div>
-                  <h3 className="text-xl font-semibold mb-1">
-                    {camp.campName}
-                  </h3>
-                  <p className="text-sm">
-                    <strong>Location:</strong> {camp.location}
-                  </p>
-                  <p className="text-sm">
-                    <strong>Healthcare Professional:</strong>{" "}
-                    {camp.healthcareProfessional}
-                  </p>
-                  <p className="text-sm">
-                    <strong>Fees:</strong> ${camp.fees}
-                  </p>
-                  <p className="text-sm">
-                    <strong>Participants:</strong> {camp.participantCount}
-                  </p>
-                  <p className="text-sm">
-                    <strong>Date:</strong>{" "}
-                    {new Date(camp.datetime).toLocaleString("en-US", {
-                      dateStyle: "medium",
-                      timeStyle: "short",
-                    })}
-                  </p>
-                </div>
-                <Link to={`/camp-details/${camp._id}`}>
-                  <button className="btn btn-info mt-4 w-full text-white">
-                    See Details
-                  </button>
-                </Link>
-              </div>
-            </div>
+            <CampCard key={camp._id} camp={camp} />
           ))
         )}
       </div>
 
       {/* Pagination */}
-      <div className="flex justify-center mt-8 gap-2 flex-wrap">
+      <div className="flex justify-center mt-10 gap-2 flex-wrap">
         <button
-          className="btn btn-sm"
+          className="btn btn-sm btn-outline"
           disabled={page === 1}
           onClick={() => setPage(page - 1)}
         >
@@ -189,14 +126,18 @@ const AvailableCamp = () => {
           <button
             key={num}
             onClick={() => setPage(num + 1)}
-            className={`btn btn-sm ${page === num + 1 ? "btn-primary" : ""}`}
+            className={`btn btn-sm ${
+              page === num + 1
+                ? "bg-gradient-to-r from-blue-500 to-green-500 text-white"
+                : "btn-outline"
+            }`}
           >
             {num + 1}
           </button>
         ))}
 
         <button
-          className="btn btn-sm"
+          className="btn btn-sm btn-outline"
           disabled={page === totalPages}
           onClick={() => setPage(page + 1)}
         >
