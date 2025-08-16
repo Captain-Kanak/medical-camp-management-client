@@ -5,6 +5,7 @@ import {
   FaHandsHelping,
   FaHospital,
 } from "react-icons/fa";
+import { Link } from "react-router";
 
 const AboutUs = () => {
   const features = [
@@ -102,12 +103,12 @@ const AboutUs = () => {
           Become a part of MediCamp today — whether as a volunteer, healthcare
           professional, or supporter, your contribution makes a difference.
         </p>
-        <a
-          href="/signin"
+        <Link
+          to="/signin"
           className="inline-block px-8 py-3 font-semibold text-white bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg shadow-lg hover:scale-105 transition-transform duration-300"
         >
           Join Us
-        </a>
+        </Link>
       </section>
     </div>
   );

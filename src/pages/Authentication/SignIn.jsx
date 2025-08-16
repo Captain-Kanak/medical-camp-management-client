@@ -22,11 +22,9 @@ const SignIn = () => {
   const onSubmit = (data) => {
     const { email, password } = data;
 
-    // sign in user with email and password
     signInUser(email, password).then(async (result) => {
       const user = result.user;
 
-      // update last sign in time to the database
       const updateInfo = {
         email: user.email,
         lastSignInTime: user.metadata?.lastSignInTime,
@@ -47,23 +45,22 @@ const SignIn = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-md">
-        <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
+    <div className="flex items-center">
+      <div className="w-full max-w-md bg-white dark:bg-gray-800 p-4 lg:p-8 rounded-3xl shadow-xl">
+        <h2 className="text-3xl font-bold mb-6 text-center text-gray-800 dark:text-gray-100">
           Welcome Back
         </h2>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           {/* Email Field */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
               Email
             </label>
             <input
               type="email"
               {...register("email", { required: true })}
-              className="w-full px-4 py-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500
-              text-black"
+              className="w-full px-4 py-2 mt-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-indigo-500 text-gray-900 dark:text-gray-100"
               placeholder="Email"
             />
             {errors.email?.type === "required" && (
@@ -73,17 +70,13 @@ const SignIn = () => {
 
           {/* Password Field */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
               Password
             </label>
             <input
               type="password"
-              {...register("password", {
-                required: true,
-                minLength: 6,
-              })}
-              className="w-full px-4 py-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 
-              text-black"
+              {...register("password", { required: true, minLength: 6 })}
+              className="w-full px-4 py-2 mt-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-indigo-500 text-gray-900 dark:text-gray-100"
               placeholder="Password"
             />
             {errors.password?.type === "required" && (
@@ -91,7 +84,7 @@ const SignIn = () => {
             )}
             {errors.password?.type === "minLength" && (
               <p className="text-red-500 text-sm mt-1">
-                Password must be 6 characters or long
+                Password must be 6 characters or longer
               </p>
             )}
           </div>
@@ -99,26 +92,28 @@ const SignIn = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors cursor-pointer"
+            className="w-full py-3 rounded-xl text-white font-semibold bg-gradient-to-r from-blue-500 to-indigo-600 hover:scale-105 transition-transform duration-300 shadow-lg cursor-pointer"
           >
             Sign In
           </button>
         </form>
 
         {/* Extra Links */}
-        <div className="mt-4 text-center text-sm text-gray-600">
-          <p className="mt-2">
+        <div className="mt-6 text-center text-sm text-gray-600 dark:text-gray-300">
+          <p>
             Don’t have an account?{" "}
             <Link
               to="/register"
               state={{ from }}
-              className="text-blue-500 hover:underline"
+              className="text-blue-500 dark:text-indigo-400 hover:underline"
             >
               Sign Up
             </Link>
           </p>
         </div>
-        <div>
+
+        {/* Social Login */}
+        <div className="mt-6">
           <SocialLogIn />
         </div>
       </div>

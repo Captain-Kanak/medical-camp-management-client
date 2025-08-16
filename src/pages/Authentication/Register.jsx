@@ -24,25 +24,18 @@ const Register = () => {
   const onSubmit = (data) => {
     const { name, email, password } = data;
 
-    // create user with email and password
     createUser(email, password)
       .then((result) => {
         const user = result.user;
 
-        // update user profile in Firebase
-        const userProfile = {
-          displayName: name,
-          photoURL: profilePic,
-        };
-
+        const userProfile = { displayName: name, photoURL: profilePic };
         updateUserProfile(userProfile)
           .then(async () => {
-            // send user info to the database
             const userInfo = {
               name,
               email,
               photo: profilePic,
-              role: "participant", // default role
+              role: "participant",
               creation_date: user.metadata?.creationTime,
               last_signin_time: user.metadata?.lastSignInTime,
             };
@@ -86,83 +79,72 @@ const Register = () => {
     const imageUploadUrl = `https://api.imgbb.com/1/upload?key=${
       import.meta.env.VITE_image_upload_key
     }`;
-
     const res = await axios.post(imageUploadUrl, formData);
     setProfilePic(res.data?.data?.url);
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-md">
-        <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
+    <div className="flex items-center">
+      <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-4 lg:p-8">
+        <h2 className="text-3xl font-bold mb-6 text-center text-gray-800 dark:text-gray-100">
           Create an Account
         </h2>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          {/* Name field */}
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+          {/* Name */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
               Name
             </label>
             <input
               type="text"
               {...register("name", { required: true })}
-              className="w-full px-4 py-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 
-              text-black"
+              className="w-full px-4 py-2 mt-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-indigo-500 text-gray-900 dark:text-gray-100"
               placeholder="Name"
             />
-            {errors.name?.type === "required" && (
+            {errors.name && (
               <p className="text-red-500 text-sm mt-1">Name is required</p>
             )}
           </div>
 
-          {/* Image field */}
+          {/* Profile Picture */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
               Upload Your Photo
             </label>
             <input
               type="file"
               onChange={handleImageUpload}
-              className="w-full file-input px-4 py-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 
-              text-black"
+              className="w-full mt-1 file-input file-input-bordered file-input-primary text-gray-900 dark:text-gray-100"
               required
             />
           </div>
 
-          {/* Email field */}
+          {/* Email */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
               Email
             </label>
             <input
               type="email"
               {...register("email", { required: true })}
-              className="w-full px-4 py-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 
-              text-black"
+              className="w-full px-4 py-2 mt-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-indigo-500 text-gray-900 dark:text-gray-100"
               placeholder="Email"
             />
-            {errors.email?.type === "required" && (
+            {errors.email && (
               <p className="text-red-500 text-sm mt-1">Email is required</p>
             )}
           </div>
 
-          {/* Password field */}
+          {/* Password */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
               Password
             </label>
             <input
               type="password"
-              {...register("password", {
-                required: true,
-                minLength: {
-                  value: 6,
-                  message: "Password must be at least 6 characters",
-                },
-              })}
-              className="w-full px-4 py-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 
-              text-black"
+              {...register("password", { required: true, minLength: 6 })}
+              className="w-full px-4 py-2 mt-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-indigo-500 text-gray-900 dark:text-gray-100"
               placeholder="Password"
             />
             {errors.password?.type === "required" && (
@@ -170,28 +152,30 @@ const Register = () => {
             )}
             {errors.password?.type === "minLength" && (
               <p className="text-red-500 text-sm mt-1">
-                Password must be 6 characters or long
+                Password must be 6 characters or longer
               </p>
             )}
           </div>
 
           {/* Submit */}
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors cursor-pointer"
-          >
+          <button className="w-full py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-blue-500 to-indigo-600 hover:scale-105 transition-transform duration-300 shadow-lg">
             Register
           </button>
         </form>
 
-        {/* Link to login */}
-        <div className="mt-4 text-center text-sm text-gray-600">
+        {/* Login Link */}
+        <div className="mt-6 text-center text-sm text-gray-600 dark:text-gray-300">
           Already have an account?{" "}
-          <Link to="/signIn" className="text-blue-500 hover:underline">
+          <Link
+            to="/signIn"
+            className="text-blue-500 dark:text-indigo-400 hover:underline"
+          >
             Sign In
           </Link>
         </div>
-        <div>
+
+        {/* Social Login */}
+        <div className="mt-6">
           <SocialLogIn />
         </div>
       </div>

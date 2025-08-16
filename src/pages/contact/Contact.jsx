@@ -31,7 +31,7 @@ const Contact = () => {
       </section>
 
       {/* Contact Form */}
-      <section className="max-w-3xl mx-auto px-4 lg:px-0 mb-16">
+      <section className="max-w-3xl mx-auto px-4 lg:px-0">
         <form className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-8 space-y-6">
           <div>
             <label className="block mb-2 font-medium">Name</label>
@@ -59,22 +59,11 @@ const Contact = () => {
           </div>
           <button
             type="submit"
-            className="px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold rounded-lg shadow-md hover:scale-105 transition-transform duration-300"
+            className="px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold rounded-lg shadow-md hover:scale-105 transition-transform duration-300 cursor-pointer"
           >
             Send Message
           </button>
         </form>
-      </section>
-
-      {/* Map Placeholder */}
-      <section className="max-w-7xl mx-auto px-4 lg:px-0 text-center">
-        <h2 className="text-3xl lg:text-4xl font-bold mb-6">Our Location</h2>
-        <div className="w-full h-64 rounded-2xl overflow-hidden shadow-md">
-          {/* Replace this div with an actual Google Maps iframe if needed */}
-          <div className="w-full h-full bg-gray-300 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300">
-            Map Placeholder
-          </div>
-        </div>
       </section>
     </div>
   );
