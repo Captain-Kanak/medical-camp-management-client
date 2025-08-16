@@ -31,7 +31,7 @@ const HealthTips = () => {
     <div className="pt-8 lg:pt-16 max-w-7xl mx-auto px-4 lg:px-0">
       {/* Section Heading */}
       <div className="text-center mb-12">
-        <h2 className="text-3xl lg:text-4xl font-bold">Health Tips</h2>
+        <h2 className="text-3xl lg:text-4xl font-extrabold">Health Tips</h2>
         <p className="mt-3 text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
           Simple but effective tips to maintain a healthy lifestyle and boost
           overall well-being.

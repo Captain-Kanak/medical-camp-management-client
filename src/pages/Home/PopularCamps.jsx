@@ -32,7 +32,7 @@ const PopularCamps = () => {
     <div className="pt-8 lg:pt-16 max-w-7xl mx-auto px-4 lg:px-0">
       {/* Section Heading */}
       <div className="text-center mb-10">
-        <h2 className="text-3xl lg:text-4xl font-bold">
+        <h2 className="text-3xl lg:text-4xl font-extrabold">
           Popular Medical Camps
         </h2>
         <p className="mt-3 text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">

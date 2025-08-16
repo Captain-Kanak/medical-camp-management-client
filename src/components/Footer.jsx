@@ -4,7 +4,7 @@ import { FaTwitter, FaYoutube, FaFacebook } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <section className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white mt-8 lg:mt-16 py-10">
+    <section className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white py-10">
       <footer className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-0 flex flex-col sm:flex-row justify-between gap-12">
         {/* Logo & Description */}
         <aside className="sm:w-1/3">

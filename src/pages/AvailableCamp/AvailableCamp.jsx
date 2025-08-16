@@ -63,12 +63,10 @@ const AvailableCamp = () => {
     );
 
   return (
-    <div className="px-4 py-12 max-w-7xl mx-auto">
+    <div className="px-4 lg:px-0 pt-8 lg:pt-16 pb-16 lg:pb-24 max-w-7xl mx-auto">
       {/* Section Heading */}
       <div className="text-center mb-10">
-        <h2 className="text-3xl lg:text-4xl font-extrabold">
-          Available Camps
-        </h2>
+        <h2 className="text-3xl lg:text-4xl font-extrabold">Available Camps</h2>
         <p className="mt-3 text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
           Discover our upcoming medical camps led by trusted healthcare
           professionals. Join a camp near you to promote better health and
@@ -114,7 +112,7 @@ const AvailableCamp = () => {
       {/* Pagination */}
       <div className="flex justify-center mt-10 gap-2 flex-wrap">
         <button
-          className="btn btn-sm btn-outline"
+          className="px-5 py-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-600 hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
           disabled={page === 1}
           onClick={() => setPage(page - 1)}
         >
@@ -125,10 +123,10 @@ const AvailableCamp = () => {
           <button
             key={num}
             onClick={() => setPage(num + 1)}
-            className={`btn btn-sm ${
+            className={`px-5 py-2 rounded-lg text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 transition-all duration-300 ${
               page === num + 1
-                ? "bg-gradient-to-r from-blue-500 to-green-500 text-white"
-                : "btn-outline"
+                ? "bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg"
+                : "hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-600 hover:text-white"
             }`}
           >
             {num + 1}
@@ -136,7 +134,7 @@ const AvailableCamp = () => {
         ))}
 
         <button
-          className="btn btn-sm btn-outline"
+          className="px-5 py-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-600 hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
           disabled={page === totalPages}
           onClick={() => setPage(page + 1)}
         >
