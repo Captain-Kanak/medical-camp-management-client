@@ -87,7 +87,7 @@ const AvailableCamp = () => {
         <select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}
-          className="select select-bordered rounded-xl shadow-sm"
+          className="select select-bordered rounded-xl shadow-sm cursor-pointer"
         >
           <option value="">Sort By</option>
           <option value="mostRegistered">Most Registered</option>
@@ -112,7 +112,7 @@ const AvailableCamp = () => {
       {/* Pagination */}
       <div className="flex justify-center mt-10 gap-2 flex-wrap">
         <button
-          className="px-5 py-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-600 hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-5 py-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-600 hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           disabled={page === 1}
           onClick={() => setPage(page - 1)}
         >
@@ -123,7 +123,7 @@ const AvailableCamp = () => {
           <button
             key={num}
             onClick={() => setPage(num + 1)}
-            className={`px-5 py-2 rounded-lg text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 transition-all duration-300 ${
+            className={`px-5 py-2 rounded-lg text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 transition-all duration-300 cursor-pointer ${
               page === num + 1
                 ? "bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg"
                 : "hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-600 hover:text-white"
@@ -134,7 +134,7 @@ const AvailableCamp = () => {
         ))}
 
         <button
-          className="px-5 py-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-600 hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-5 py-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-600 hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           disabled={page === totalPages}
           onClick={() => setPage(page + 1)}
         >

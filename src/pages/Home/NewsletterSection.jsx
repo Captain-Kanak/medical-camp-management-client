@@ -38,7 +38,7 @@ const NewsletterSection = () => {
           />
           <button
             type="submit"
-            className="px-6 py-3 rounded-lg bg-white text-indigo-500 font-semibold hover:bg-gray-100 transition-all duration-300"
+            className="px-6 py-3 rounded-lg bg-white text-indigo-500 font-semibold hover:bg-gray-100 transition-all duration-300 cursor-pointer"
           >
             Subscribe
           </button>

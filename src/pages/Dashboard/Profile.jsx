@@ -162,7 +162,7 @@ const Profile = () => {
               <div className="flex justify-end gap-3 mt-6">
                 <button
                   type="button"
-                  className="px-4 py-2 rounded-full bg-red-500 hover:bg-red-400 text-white font-semibold transition"
+                  className="px-4 py-2 rounded-full bg-red-500 hover:bg-red-400 text-white font-semibold transition cursor-pointer"
                   onClick={() => setIsModalOpen(false)}
                 >
                   Cancel
@@ -173,7 +173,7 @@ const Profile = () => {
                   className={`px-4 py-2 rounded-full text-white font-semibold transition transform ${
                     uploading
                       ? "bg-gray-400 cursor-not-allowed"
-                      : "bg-gradient-to-r from-indigo-500 to-purple-600 hover:scale-105"
+                      : "bg-gradient-to-r from-indigo-500 to-purple-600 hover:scale-105 cursor-pointer"
                   }`}
                 >
                   {uploading ? "Uploading..." : "Save Changes"}
