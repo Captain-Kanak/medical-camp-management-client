@@ -22,7 +22,7 @@ const Feedbacks = () => {
   }
 
   return (
-    <section className="pt-8 lg:pt-16 pb-16 lg:pb-24 max-w-7xl mx-auto px-4 lg:px-0">
+    <section className="pt-8 lg:pt-16 max-w-7xl mx-auto px-4 lg:px-0">
       {/* Section Heading */}
       <div className="text-center mb-12">
         <h2 className="text-3xl lg:text-4xl font-extrabold">Feedbacks</h2>
