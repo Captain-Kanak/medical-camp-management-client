@@ -14,17 +14,19 @@ import CampDetails from "../pages/Home/CampDetails";
 import ManageRegisteredCamps from "../pages/Dashboard/Organizer/ManageRegisteredCamps";
 import RegisteredCamp from "../pages/Dashboard/Participant/RegisteredCamp";
 import Payment from "../pages/Dashboard/Payment/Payment";
-import Forbidden from "../pages/Error/Forbidden";
+import Forbidden from "../pages/Error/ErrorPage";
 import OrganizerRouter from "./OrganizerRouter";
 import PaymentHistory from "../pages/Dashboard/Participant/PaymentHistory";
 import Analytics from "../pages/Dashboard/Participant/Analytics";
 import AboutUs from "../pages/about/AboutUs";
 import Contact from "../pages/contact/Contact";
+import ErrorPage from "../pages/Error/ErrorPage";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     Component: App,
+    errorElement: <ErrorPage />,
     children: [
       {
         index: true,

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useForm } from "react-hook-form";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import Spinner from "../../components/Spinner";
@@ -14,6 +14,7 @@ const CampDetails = () => {
   const axiosPublic = useAxiosPublic();
   const axiosSecure = useAxiosSecure();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -50,6 +51,7 @@ const CampDetails = () => {
           confirmButtonColor: "#3085d6",
         });
         setIsModalOpen(false);
+        navigate("/dashboard/registered-camps");
       }
     } catch (error) {
       console.error(error);

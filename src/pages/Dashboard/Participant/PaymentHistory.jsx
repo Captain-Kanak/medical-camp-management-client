@@ -10,7 +10,7 @@ const PaymentHistory = () => {
   const axiosSecure = useAxiosSecure();
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 9;
 
   const { data: payments = [], isLoading } = useQuery({
     queryKey: ["payments", user.email],

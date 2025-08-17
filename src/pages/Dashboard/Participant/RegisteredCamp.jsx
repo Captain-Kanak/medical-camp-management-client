@@ -14,7 +14,7 @@ const RegisteredCamp = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
+  const itemsPerPage = 9;
 
   const {
     data: registeredCamps = [],

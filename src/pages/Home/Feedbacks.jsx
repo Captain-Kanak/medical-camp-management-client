@@ -35,7 +35,7 @@ const Feedbacks = () => {
 
       {/* Feedback Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {feedbacks.map((s, i) => (
+        {feedbacks.slice(0, 4).map((s, i) => (
           <motion.div
             key={i}
             whileHover={{ scale: 1.05 }}
