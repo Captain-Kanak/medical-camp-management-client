@@ -97,7 +97,7 @@ const Profile = () => {
         <p className="text-white/80">{user?.email}</p>
 
         <button
-          className="mt-4 px-6 py-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold shadow-lg hover:scale-105 transition-transform duration-300"
+          className="mt-4 px-6 py-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold shadow-lg hover:scale-105 transition-transform duration-300 cursor-pointer"
           onClick={openModal}
         >
           Update Profile

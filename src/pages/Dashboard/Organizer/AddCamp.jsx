@@ -71,11 +71,14 @@ const AddCamp = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-4">
-      <div className="max-w-3xl w-full p-4 lg:p-10 rounded-3xl bg-white/20 backdrop-blur-lg shadow-2xl border border-white/30">
+      <div className="max-w-5xl w-full p-4 lg:p-10 rounded-3xl bg-white/20 backdrop-blur-lg shadow-2xl border border-white/30">
         <h2 className="text-3xl lg:text-4xl font-extrabold mb-10 text-center text-white drop-shadow-xl">
           Add A New Camp
         </h2>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="grid grid-cols-1 lg:grid-cols-2 gap-6"
+        >
           {/* Camp Name */}
           <div>
             <label className="block text-white font-semibold mb-1">
@@ -91,28 +94,6 @@ const AddCamp = () => {
               <p className="text-red-300 text-sm mt-1">
                 {errors.campName.message}
               </p>
-            )}
-          </div>
-
-          {/* Camp Image */}
-          <div>
-            <label className="block text-white font-semibold mb-1">
-              Upload Camp Image
-            </label>
-            <input
-              type="file"
-              onChange={handleImageUpload}
-              className="file-input file-input-bordered w-full bg-indigo-500/30 border-white/30 text-white"
-            />
-            {uploading && (
-              <p className="text-yellow-200 mt-1">Uploading image...</p>
-            )}
-            {campImage && (
-              <img
-                src={campImage}
-                alt="Preview"
-                className="mt-3 rounded-xl shadow-lg w-full h-48 object-cover border border-white/40"
-              />
             )}
           </div>
 
@@ -200,8 +181,30 @@ const AddCamp = () => {
             )}
           </div>
 
-          {/* Description */}
-          <div>
+          {/* Camp Image (Full Width) */}
+          <div className="lg:col-span-2">
+            <label className="block text-white font-semibold mb-1">
+              Upload Camp Image
+            </label>
+            <input
+              type="file"
+              onChange={handleImageUpload}
+              className="file-input file-input-bordered bg-indigo-500/30 border-white/30 text-white"
+            />
+            {uploading && (
+              <p className="text-yellow-200 mt-1">Uploading image...</p>
+            )}
+            {campImage && (
+              <img
+                src={campImage}
+                alt="Preview"
+                className="mt-3 rounded-xl shadow-lg w-48 h-48 object-cover border border-white/40"
+              />
+            )}
+          </div>
+
+          {/* Description (Full Width) */}
+          <div className="lg:col-span-2">
             <label className="block text-white font-semibold mb-1">
               Description
             </label>
@@ -210,9 +213,9 @@ const AddCamp = () => {
                 required: "Description is required",
               })}
               className="w-full px-4 py-3 rounded-xl bg-indigo-500/30 text-white placeholder-white/70 border border-white/30 focus:ring-2 focus:ring-indigo-300 transition shadow-md"
-              rows="5"
+              rows="4"
               placeholder="Enter camp description"
-            ></textarea>
+            />
             {errors.description && (
               <p className="text-red-300 text-sm mt-1">
                 {errors.description.message}
@@ -220,8 +223,8 @@ const AddCamp = () => {
             )}
           </div>
 
-          {/* Submit Button */}
-          <div className="text-center mt-6">
+          {/* Submit Button (Full Width) */}
+          <div className="lg:col-span-2 text-center">
             <button
               type="submit"
               disabled={uploading}

@@ -17,7 +17,7 @@ const ManageCamp = () => {
   const [editingCamp, setEditingCamp] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 9;
 
   const {
     register,
@@ -88,18 +88,14 @@ const ManageCamp = () => {
   };
 
   const onSubmit = async (data) => {
-    if (!campImage) {
+    if (!campImage)
       return Swal.fire(
         "Missing Image",
         "Please upload a camp image.",
         "warning"
       );
-    }
 
-    const updateCamp = {
-      ...data,
-      image: campImage,
-    };
+    const updateCamp = { ...data, image: campImage };
 
     try {
       const res = await axiosSecure.patch(
@@ -132,9 +128,7 @@ const ManageCamp = () => {
       setUploading(true);
       const res = await axios.post(imageUploadUrl, formData);
       const url = res.data?.data?.url;
-      if (url) {
-        setCampImage(url);
-      }
+      if (url) setCampImage(url);
     } catch (error) {
       console.error("Image upload failed:", error);
       Swal.fire("Upload Error", "Image upload failed.", "error");
@@ -143,13 +137,13 @@ const ManageCamp = () => {
     }
   };
 
-  if (isLoading) {
-    return <Spinner />;
-  }
+  if (isLoading) return <Spinner />;
 
   return (
-    <div className="p-5">
-      <h2 className="text-2xl font-bold mb-4 text-center">Manage Medical Camps</h2>
+    <div className="p-5 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 min-h-screen">
+      <h2 className="text-3xl font-extrabold mb-6 text-white text-center drop-shadow-lg">
+        Manage Medical Camps
+      </h2>
 
       <SearchBar
         value={searchTerm}
@@ -157,208 +151,168 @@ const ManageCamp = () => {
         placeholder="Search by camp name, participant, or status"
       />
 
-      <div className="w-full overflow-x-auto">
-        <table className="w-full min-w-[700px] bg-base-200 md:border md:border-gray-200 shadow-md rounded-md">
-          <thead className="hidden md:table-header-group bg-base-300">
-            <tr className="text-left text-sm uppercase md:border-b md:border-gray-300">
-              <th className="px-4 py-2 md:border-r md:border-gray-300">#</th>
-              <th className="px-4 py-2 md:border-r md:border-gray-300">Name</th>
-              <th className="px-4 py-2 md:border-r md:border-gray-300">
-                Date & Time
-              </th>
-              <th className="px-4 py-2 md:border-r md:border-gray-300">
-                Location
-              </th>
-              <th className="px-4 py-2 md:border-r md:border-gray-300">
-                Healthcare Professional
-              </th>
-              <th className="px-4 py-2 text-center">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentCamps.map((camp, index) => (
-              <tr
-                key={camp._id}
-                className="text-sm block md:table-row border-t border-gray-300 md:border-none"
-              >
-                <td className="px-4 py-2 block md:table-cell md:border md:border-gray-300">
-                  <span className="md:hidden font-semibold"># </span>
-                  {startIndex + index + 1}
-                </td>
-                <td className="px-4 py-2 block md:table-cell md:border md:border-gray-300">
-                  <span className="md:hidden font-semibold">Name: </span>
-                  {camp.campName}
-                </td>
-                <td className="px-4 py-2 block md:table-cell md:border md:border-gray-300">
-                  <span className="md:hidden font-semibold">Date & Time: </span>
-                  {new Date(camp.datetime).toLocaleString("en-US", {
-                    dateStyle: "medium",
-                    timeStyle: "short",
-                  })}
-                </td>
-                <td className="px-4 py-2 block md:table-cell md:border md:border-gray-300">
-                  <span className="md:hidden font-semibold">Location: </span>
-                  {camp.location}
-                </td>
-                <td className="px-4 py-2 block md:table-cell md:border md:border-gray-300">
-                  <span className="md:hidden font-semibold">
-                    Professional:{" "}
-                  </span>
-                  {camp.healthcareProfessional}
-                </td>
-                <td className="px-4 py-2 block md:table-cell md:border md:border-gray-300 text-center">
-                  <div className="w-full flex md:justify-center justify-center md:flex-row flex-col items-center md:gap-2 gap-3 mt-2">
-                    <button
-                      className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 cursor-pointer"
-                      onClick={() => handleEdit(camp)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleDelete(camp._id)}
-                      className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 cursor-pointer"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-            {camps.length === 0 && (
-              <tr className="block md:table-row">
-                <td
-                  colSpan="6"
-                  className="text-center py-4 text-gray-500 block md:table-cell"
+      {/* Card Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+        {currentCamps.map((camp) => (
+          <div
+            key={camp._id}
+            className="bg-white rounded-xl shadow-md flex flex-col overflow-hidden"
+          >
+            {/* Image */}
+            <img
+              src={camp.image || "https://via.placeholder.com/400x200"}
+              alt={camp.campName}
+              className="w-full h-40 object-cover"
+            />
+
+            {/* Content */}
+            <div className="flex flex-col flex-grow p-4">
+              <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                {camp.campName}
+              </h3>
+              <p className="text-sm text-gray-600">
+                <span className="font-medium">Date:</span>{" "}
+                {new Date(camp.datetime).toLocaleString()}
+              </p>
+              <p className="text-sm text-gray-600">
+                <span className="font-medium">Location:</span> {camp.location}
+              </p>
+              <p className="text-sm text-gray-600">
+                <span className="font-medium">Professional:</span>{" "}
+                {camp.healthcareProfessional}
+              </p>
+              <p className="text-sm text-gray-600 mb-4">
+                <span className="font-medium">Fees:</span> ${camp.fees}
+              </p>
+
+              {/* Actions pinned at bottom */}
+              <div className="mt-auto flex gap-2">
+                <button
+                  onClick={() => handleEdit(camp)}
+                  className="flex-1 bg-blue-500 hover:bg-blue-600 text-white text-sm py-2 rounded-md cursor-pointer"
                 >
-                  No camps found.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDelete(camp._id)}
+                  className="flex-1 bg-red-500 hover:bg-red-600 text-white text-sm py-2 rounded-md cursor-pointer"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
 
-        {/* Pagination */}
-        <div className="flex justify-center mt-4 space-x-1 items-center flex-wrap">
-          <button
-            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-            disabled={currentPage === 1}
-            className={`px-3 py-1 rounded ${
-              currentPage === 1
-                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                : "bg-blue-500 text-white hover:bg-blue-600 cursor-pointer"
-            }`}
-          >
-            Prev
-          </button>
-
-          {[...Array(totalPages).keys()].map((page) => (
-            <button
-              key={page}
-              onClick={() => setCurrentPage(page + 1)}
-              className={`px-3 py-1 rounded ${
-                currentPage === page + 1
-                  ? "bg-blue-500 text-white cursor-pointer"
-                  : "cursor-pointer"
-              }`}
-            >
-              {page + 1}
-            </button>
-          ))}
-
-          <button
-            onClick={() =>
-              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-            }
-            disabled={currentPage === totalPages}
-            className={`px-3 py-1 rounded ${
-              currentPage === totalPages
-                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                : "bg-blue-500 text-white hover:bg-blue-600 cursor-pointer"
-            }`}
-          >
-            Next
-          </button>
-        </div>
+        {currentCamps.length === 0 && (
+          <p className="col-span-full text-center text-gray-600 py-6">
+            No camps found.
+          </p>
+        )}
       </div>
 
-      {/* Modal */}
+      {/* Pagination */}
+      <div className="flex justify-center mt-6 gap-2 flex-wrap">
+        <button
+          onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+          disabled={currentPage === 1}
+          className={`px-4 py-2 rounded-xl font-semibold transition ${
+            currentPage === 1
+              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+              : "bg-indigo-500 hover:bg-indigo-600 text-white cursor-pointer"
+          }`}
+        >
+          Prev
+        </button>
+        {[...Array(totalPages).keys()].map((page) => (
+          <button
+            key={page}
+            onClick={() => setCurrentPage(page + 1)}
+            className={`px-5 py-2 rounded-xl font-semibold cursor-pointer ${
+              currentPage === page + 1
+                ? "bg-indigo-500 text-gray-200"
+                : "bg-indigo-200 text-gray-500 hover:bg-indigo-500 hover:text-gray-200"
+            }`}
+          >
+            {page + 1}
+          </button>
+        ))}
+        <button
+          onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+          disabled={currentPage === totalPages}
+          className={`px-4 py-2 rounded-xl font-semibold transition ${
+            currentPage === totalPages
+              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+              : "bg-indigo-500 hover:bg-indigo-600 text-white cursor-pointer"
+          }`}
+        >
+          Next
+        </button>
+      </div>
+
+      {/* Modal (Edit Camp) */}
       {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-base-200 bg-opacity-40 z-50 p-4 overflow-y-auto">
-          <div className="bg-base-300 p-6 rounded-lg shadow-lg w-full max-w-md max-h-[90vh] overflow-y-auto">
-            <h3 className="text-xl font-semibold mb-4">Edit Camp</h3>
+        <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50 p-4">
+          <div className="bg-white/20 backdrop-blur-lg rounded-2xl shadow-2xl p-6 w-full max-w-md overflow-y-auto">
+            <h3 className="text-2xl font-bold mb-4 text-white drop-shadow-md">
+              Edit Camp
+            </h3>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               {/* Camp Name */}
               <div>
-                <label
-                  htmlFor="campName"
-                  className="block text-sm font-medium mb-1"
-                >
+                <label className="block text-sm font-medium mb-1 text-white">
                   Camp Name
                 </label>
                 <input
-                  id="campName"
-                  type="text"
                   {...register("campName", {
                     required: "Camp name is required",
                   })}
-                  className="w-full input input-bordered"
-                  placeholder="Enter camp name"
+                  type="text"
+                  className="w-full input input-bordered bg-indigo-500/30 text-white placeholder-white/70 border-white/40"
                 />
                 {errors.campName && (
-                  <p className="text-red-500 text-sm">
+                  <p className="text-red-300 text-sm">
                     {errors.campName.message}
                   </p>
                 )}
               </div>
 
-              {/* Camp Image Upload */}
+              {/* Image Upload */}
               <div>
-                <label
-                  htmlFor="campImage"
-                  className="block text-sm font-medium mb-1"
-                >
+                <label className="block text-sm font-medium mb-1 text-white">
                   Upload Camp Image
                 </label>
                 <input
-                  id="campImage"
                   type="file"
                   onChange={handleImageUpload}
-                  className="w-full file-input file-input-bordered"
+                  className="w-full file-input file-input-bordered bg-indigo-500/30 border-white/40 text-white"
                 />
                 {uploading && (
-                  <p className="text-yellow-600 text-sm">Uploading...</p>
+                  <p className="text-yellow-200 text-sm">Uploading...</p>
                 )}
               </div>
 
-              {/* Camp Fees */}
+              {/* Fees */}
               <div>
-                <label
-                  htmlFor="fees"
-                  className="block text-sm font-medium mb-1"
-                >
-                  Camp Fees ($)
+                <label className="block text-sm font-medium mb-1 text-white">
+                  Fees ($)
                 </label>
                 <input
-                  id="fees"
-                  type="number"
                   {...register("fees", {
                     required: "Fees are required",
                     min: 0,
                   })}
-                  className="w-full input input-bordered"
-                  placeholder="Enter camp fees"
+                  type="number"
+                  className="w-full input input-bordered bg-indigo-500/30 text-white border-white/40"
                 />
                 {errors.fees && (
-                  <p className="text-red-500 text-sm">{errors.fees.message}</p>
+                  <p className="text-red-300 text-sm">{errors.fees.message}</p>
                 )}
               </div>
 
-              {/* Date and Time */}
+              {/* Date & Time */}
               <div>
-                <label
-                  htmlFor="datetime"
-                  className="block text-sm font-medium mb-1"
-                >
+                <label className="block text-sm font-medium mb-1 text-white">
                   Date & Time
                 </label>
                 <Controller
@@ -367,18 +321,16 @@ const ManageCamp = () => {
                   rules={{ required: "Date & time is required" }}
                   render={({ field }) => (
                     <DatePicker
-                      id="datetime"
                       selected={field.value}
                       onChange={field.onChange}
                       showTimeSelect
                       dateFormat="Pp"
-                      placeholderText="Select date and time"
-                      className="w-full input input-bordered"
+                      className="w-full input input-bordered bg-indigo-500/30 text-white border-white/40"
                     />
                   )}
                 />
                 {errors.datetime && (
-                  <p className="text-red-500 text-sm">
+                  <p className="text-red-300 text-sm">
                     {errors.datetime.message}
                   </p>
                 )}
@@ -386,23 +338,18 @@ const ManageCamp = () => {
 
               {/* Location */}
               <div>
-                <label
-                  htmlFor="location"
-                  className="block text-sm font-medium mb-1"
-                >
+                <label className="block text-sm font-medium mb-1 text-white">
                   Location
                 </label>
                 <input
-                  id="location"
-                  type="text"
                   {...register("location", {
                     required: "Location is required",
                   })}
-                  className="w-full input input-bordered"
-                  placeholder="Enter location"
+                  type="text"
+                  className="w-full input input-bordered bg-indigo-500/30 text-white border-white/40"
                 />
                 {errors.location && (
-                  <p className="text-red-500 text-sm">
+                  <p className="text-red-300 text-sm">
                     {errors.location.message}
                   </p>
                 )}
@@ -410,23 +357,18 @@ const ManageCamp = () => {
 
               {/* Healthcare Professional */}
               <div>
-                <label
-                  htmlFor="healthcareProfessional"
-                  className="block text-sm font-medium mb-1"
-                >
+                <label className="block text-sm font-medium mb-1 text-white">
                   Healthcare Professional
                 </label>
                 <input
-                  id="healthcareProfessional"
-                  type="text"
                   {...register("healthcareProfessional", {
                     required: "Professional name is required",
                   })}
-                  className="w-full input input-bordered"
-                  placeholder="Enter healthcare professional"
+                  type="text"
+                  className="w-full input input-bordered bg-indigo-500/30 text-white border-white/40"
                 />
                 {errors.healthcareProfessional && (
-                  <p className="text-red-500 text-sm">
+                  <p className="text-red-300 text-sm">
                     {errors.healthcareProfessional.message}
                   </p>
                 )}
@@ -434,40 +376,35 @@ const ManageCamp = () => {
 
               {/* Description */}
               <div>
-                <label
-                  htmlFor="description"
-                  className="block text-sm font-medium mb-1"
-                >
+                <label className="block text-sm font-medium mb-1 text-white">
                   Description
                 </label>
                 <textarea
-                  id="description"
                   {...register("description", {
                     required: "Description is required",
                   })}
-                  className="w-full textarea textarea-bordered"
                   rows="4"
-                  placeholder="Enter description"
+                  className="w-full textarea textarea-bordered bg-indigo-500/30 text-white border-white/40"
                 ></textarea>
                 {errors.description && (
-                  <p className="text-red-500 text-sm">
+                  <p className="text-red-300 text-sm">
                     {errors.description.message}
                   </p>
                 )}
               </div>
 
-              {/* Submit Buttons */}
-              <div className="flex justify-end space-x-2">
+              {/* Buttons */}
+              <div className="flex justify-end gap-2 mt-4">
                 <button
                   type="submit"
-                  className="btn btn-primary cursor-pointer"
+                  className="px-4 py-2 rounded-full bg-indigo-500 hover:bg-indigo-600 text-white font-semibold transition cursor-pointer"
                 >
                   Update
                 </button>
                 <button
                   type="button"
-                  className="btn cursor-pointer"
                   onClick={() => setIsModalOpen(false)}
+                  className="px-4 py-2 rounded-full bg-gray-500 hover:bg-gray-600 text-white font-semibold transition cursor-pointer"
                 >
                   Cancel
                 </button>

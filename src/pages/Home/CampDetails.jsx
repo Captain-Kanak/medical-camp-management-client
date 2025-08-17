@@ -150,23 +150,35 @@ const CampDetails = () => {
               )}
 
               {/* Participant Info */}
-              {["name", "email"].map((field) => (
-                <div key={field}>
-                  <label className="label">
-                    <span className="label-text font-medium">
-                      Participant{" "}
-                      {field.charAt(0).toUpperCase() + field.slice(1)}
-                    </span>
-                  </label>
-                  <input
-                    type={field === "email" ? "email" : "text"}
-                    defaultValue={user?.[field] || ""}
-                    readOnly
-                    {...register(field)}
-                    className="input input-bordered w-full cursor-not-allowed"
-                  />
-                </div>
-              ))}
+              <div>
+                <label className="label">
+                  <span className="label-text font-medium">
+                    Participant Name
+                  </span>
+                </label>
+                <input
+                  type="text"
+                  defaultValue={user?.displayName || user?.name || ""}
+                  readOnly
+                  {...register("name")}
+                  className="input input-bordered w-full cursor-not-allowed"
+                />
+              </div>
+
+              <div>
+                <label className="label">
+                  <span className="label-text font-medium">
+                    Participant Email
+                  </span>
+                </label>
+                <input
+                  type="email"
+                  defaultValue={user?.email || ""}
+                  readOnly
+                  {...register("email")}
+                  className="input input-bordered w-full cursor-not-allowed"
+                />
+              </div>
 
               {/* Editable Fields */}
               <div>

@@ -12,13 +12,16 @@ const useAxiosSecure = () => {
   // request interceptor
   axiosSecure.interceptors.request.use(
     (config) => {
-      // Do something before request is sent
-      config.headers.Authorization = `Bearer ${user.accessToken}`;
+      // Prefer localStorage token (or fallback to user?.accessToken if available)
+      const token = localStorage.getItem("access-token") || user?.accessToken;
+
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
 
       return config;
     },
     (error) => {
-      // Do something with request error
       return Promise.reject(error);
     }
   );
