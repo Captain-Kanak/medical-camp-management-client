@@ -66,8 +66,8 @@ const ManageRegisteredCamps = () => {
   if (isLoading) return <Spinner />;
 
   return (
-    <div className="p-5 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 min-h-screen">
-      <h2 className="text-3xl font-extrabold mb-6 text-white text-center drop-shadow-lg">
+    <div className="p-6 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 min-h-screen">
+      <h2 className="text-2xl lg:text-4xl font-bold mb-5 text-center text-white drop-shadow-md">
         Manage Registered Camps
       </h2>
 
@@ -77,70 +77,130 @@ const ManageRegisteredCamps = () => {
         placeholder="Search by camp name, participant, or status"
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-        {currentCamps.length > 0 ? (
-          currentCamps.map((camp) => (
-            <div
-              key={camp._id}
-              className="bg-white/20 backdrop-blur-md rounded-xl p-5 shadow-lg text-white flex flex-col justify-between"
-            >
-              <div>
-                <h3 className="text-xl font-bold mb-2">{camp.campName}</h3>
-                <p className="text-sm">
-                  <span className="font-semibold">Participant:</span>{" "}
-                  {camp.name}
-                </p>
-                <p className="text-sm">
-                  <span className="font-semibold">Fees:</span> ${camp.fees}
-                </p>
-                <p className="text-sm mt-2">
-                  <span className="font-semibold">Payment:</span>{" "}
-                  <span
-                    className={`px-2 py-1 rounded-xl text-xs font-semibold ${
-                      camp.payment_status === "paid"
-                        ? "bg-green-500/80"
-                        : "bg-yellow-500/80"
-                    }`}
-                  >
-                    {camp.payment_status || "unpaid"}
-                  </span>
-                </p>
-                <p className="text-sm mt-2">
-                  <span className="font-semibold">Status:</span>{" "}
-                  <span
-                    className={`px-2 py-1 rounded-xl text-xs font-semibold ${
-                      camp.confirmation_status === "confirmed"
-                        ? "bg-blue-500/80"
-                        : "bg-gray-500/80"
-                    }`}
-                  >
-                    {camp.confirmation_status || "pending"}
-                  </span>
-                </p>
-              </div>
+      {/* Responsive Table */}
+      <div className="overflow-x-auto mt-4">
+        <table className="min-w-full backdrop-blur-md bg-white/20 text-white rounded-xl shadow-lg">
+          <thead className="hidden md:table-header-group bg-white/30 text-sm uppercase font-semibold">
+            <tr className="text-left text-sm uppercase md:border-b md:border-gray-300">
+              <th className="px-4 py-2 md:border-r md:border-gray-300">#</th>
+              <th className="px-4 py-2 md:border-r md:border-gray-300">
+                Camp Name
+              </th>
+              <th className="px-4 py-2 md:border-r md:border-gray-300">Date</th>
+              <th className="px-4 py-2 md:border-r md:border-gray-300">Fees</th>
+              <th className="px-4 py-2 md:border-r md:border-gray-300">
+                Participant
+              </th>
+              <th className="px-4 py-2 md:border-r md:border-gray-300">
+                Payment
+              </th>
+              <th className="px-4 py-2 md:border-r md:border-gray-300">
+                Status
+              </th>
+              <th className="px-4 py-2 md:border-r md:border-gray-300">
+                Action
+              </th>
+            </tr>
+          </thead>
 
-              <button
-                onClick={() => handleCancel(camp._id, camp.campId)}
-                disabled={
-                  camp.payment_status === "paid" ||
-                  camp.confirmation_status === "confirmed"
-                }
-                className={`mt-4 w-full px-3 py-2 rounded-lg font-semibold text-white transition ${
-                  camp.payment_status === "paid" ||
-                  camp.confirmation_status === "confirmed"
-                    ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-red-500 hover:bg-red-600 cursor-pointer"
-                }`}
-              >
-                Cancel
-              </button>
-            </div>
-          ))
-        ) : (
-          <p className="col-span-full text-center text-white/70 text-lg font-medium">
-            No registered camps found.
-          </p>
-        )}
+          <tbody>
+            {currentCamps.length > 0 ? (
+              currentCamps.map((camp, index) => (
+                <tr
+                  key={camp._id}
+                  className="text-sm block md:table-row border-b border-gray-300 md:border-none"
+                >
+                  {/* Index */}
+                  <td className="px-4 py-2 block md:table-cell md:border md:border-gray-300">
+                    <span className="md:hidden font-semibold"># </span>
+                    {startIndex + index + 1}
+                  </td>
+
+                  {/* Name */}
+                  <td className="px-4 py-2 block md:table-cell md:border md:border-gray-300">
+                    <span className="md:hidden font-semibold">Camp Name: </span>
+                    {camp.campName}
+                  </td>
+
+                  {/* Date */}
+                  <td className="px-4 py-2 block md:table-cell md:border md:border-gray-300">
+                    <span className="md:hidden font-semibold">Date: </span>
+                    {new Date(camp.registered_at).toLocaleString("en-US", {
+                      dateStyle: "medium",
+                      timeStyle: "short",
+                    })}
+                  </td>
+
+                  {/* Fees */}
+                  <td className="px-4 py-2 block md:table-cell md:border md:border-gray-300">
+                    <span className="md:hidden font-semibold">Fees: </span>$
+                    {camp.fees}
+                  </td>
+
+                  {/* Name */}
+                  <td className="px-4 py-2 block md:table-cell md:border md:border-gray-300">
+                    <span className="md:hidden font-semibold">
+                      Participant:
+                    </span>
+                    {camp.name}
+                  </td>
+
+                  <td className="px-4 py-3">
+                    <span
+                      className={`px-2 py-1 rounded-xl text-xs font-semibold ${
+                        camp.payment_status === "paid"
+                          ? "bg-green-500/80"
+                          : "bg-yellow-500/80"
+                      }`}
+                    >
+                      {camp.payment_status || "unpaid"}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3">
+                    <span
+                      className={`px-2 py-1 rounded-xl text-xs font-semibold ${
+                        camp.confirmation_status === "confirmed"
+                          ? "bg-blue-500/80"
+                          : "bg-gray-500/80"
+                      }`}
+                    >
+                      {camp.confirmation_status || "pending"}
+                    </span>
+                  </td>
+                  {/* Actions */}
+                  <td className="px-4 py-2 block text-center md:table-cell md:border md:border-gray-300">
+                    <div className="flex flex-col sm:flex-row gap-2 justify-center">
+                      <button
+                        onClick={() => handleCancel(camp._id, camp.campId)}
+                        disabled={
+                          camp.payment_status === "paid" ||
+                          camp.confirmation_status === "confirmed"
+                        }
+                        className={`px-3 py-1 rounded-lg font-semibold text-white transition ${
+                          camp.payment_status === "paid" ||
+                          camp.confirmation_status === "confirmed"
+                            ? "bg-gray-400 cursor-not-allowed"
+                            : "bg-red-500 hover:bg-red-600 cursor-pointer"
+                        }`}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td
+                  colSpan="7"
+                  className="text-center py-6 text-white/70 font-medium"
+                >
+                  No registered camps found.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
 
       {/* Pagination */}

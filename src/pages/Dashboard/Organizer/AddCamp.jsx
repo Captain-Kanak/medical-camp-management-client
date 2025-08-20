@@ -70,170 +70,174 @@ const AddCamp = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-4">
-      <div className="max-w-5xl w-full p-4 lg:p-10 rounded-3xl bg-white/20 backdrop-blur-lg shadow-2xl border border-white/30">
-        <h2 className="text-3xl lg:text-4xl font-extrabold mb-10 text-center text-white drop-shadow-xl">
-          Add A New Camp
-        </h2>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="grid grid-cols-1 lg:grid-cols-2 gap-6"
-        >
-          {/* Camp Name */}
-          <div>
-            <label className="block text-white font-semibold mb-1">
-              Camp Name
-            </label>
-            <input
-              type="text"
-              {...register("campName", { required: "Camp name is required" })}
-              className="w-full px-4 py-3 rounded-xl bg-indigo-500/30 text-white placeholder-white/70 border border-white/30 focus:ring-2 focus:ring-indigo-300 transition shadow-md"
-              placeholder="Enter camp name"
-            />
-            {errors.campName && (
-              <p className="text-red-300 text-sm mt-1">
-                {errors.campName.message}
-              </p>
-            )}
-          </div>
+    <div className="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-4">
+      <h2 className="text-2xl lg:text-4xl font-extrabold mb-10 text-center text-white drop-shadow-xl">
+        Add a New Camp
+      </h2>
+      <div className="flex items-center justify-center">
+        <div className="max-w-5xl w-full p-4 lg:p-10 rounded-3xl bg-white/20 backdrop-blur-lg shadow-2xl border border-white/30">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="grid grid-cols-1 lg:grid-cols-2 gap-6"
+          >
+            {/* Camp Name */}
+            <div>
+              <label className="block text-white font-semibold mb-1">
+                Camp Name
+              </label>
+              <input
+                type="text"
+                {...register("campName", { required: "Camp name is required" })}
+                className="w-full px-4 py-3 rounded-xl bg-indigo-500/30 text-white placeholder-white/70 border border-white/30 focus:ring-2 focus:ring-indigo-300 transition shadow-md"
+                placeholder="Enter camp name"
+              />
+              {errors.campName && (
+                <p className="text-red-300 text-sm mt-1">
+                  {errors.campName.message}
+                </p>
+              )}
+            </div>
 
-          {/* Camp Fees */}
-          <div>
-            <label className="block text-white font-semibold mb-1">
-              Camp Fees ($)
-            </label>
-            <input
-              type="number"
-              {...register("fees", {
-                required: "Camp fees are required",
-                min: 0,
-              })}
-              className="w-full px-4 py-3 rounded-xl bg-indigo-500/30 text-white placeholder-white/70 border border-white/30 focus:ring-2 focus:ring-indigo-300 transition shadow-md"
-              placeholder="Enter camp fees"
-            />
-            {errors.fees && (
-              <p className="text-red-300 text-sm mt-1">{errors.fees.message}</p>
-            )}
-          </div>
+            {/* Camp Fees */}
+            <div>
+              <label className="block text-white font-semibold mb-1">
+                Camp Fees ($)
+              </label>
+              <input
+                type="number"
+                {...register("fees", {
+                  required: "Camp fees are required",
+                  min: 0,
+                })}
+                className="w-full px-4 py-3 rounded-xl bg-indigo-500/30 text-white placeholder-white/70 border border-white/30 focus:ring-2 focus:ring-indigo-300 transition shadow-md"
+                placeholder="Enter camp fees"
+              />
+              {errors.fees && (
+                <p className="text-red-300 text-sm mt-1">
+                  {errors.fees.message}
+                </p>
+              )}
+            </div>
 
-          {/* Date & Time */}
-          <div>
-            <label className="block text-white font-semibold mb-1">
-              Date & Time
-            </label>
-            <Controller
-              name="datetime"
-              control={control}
-              rules={{ required: "Date and time is required" }}
-              render={({ field }) => (
-                <DatePicker
-                  selected={field.value}
-                  onChange={field.onChange}
-                  showTimeSelect
-                  dateFormat="Pp"
-                  placeholderText="Select date and time"
-                  className="w-full px-4 py-3 rounded-xl bg-indigo-500/30 text-white placeholder-white/70 border border-white/30 focus:ring-2 focus:ring-indigo-300 transition shadow-md"
+            {/* Date & Time */}
+            <div>
+              <label className="block text-white font-semibold mb-1">
+                Date & Time
+              </label>
+              <Controller
+                name="datetime"
+                control={control}
+                rules={{ required: "Date and time is required" }}
+                render={({ field }) => (
+                  <DatePicker
+                    selected={field.value}
+                    onChange={field.onChange}
+                    showTimeSelect
+                    dateFormat="Pp"
+                    placeholderText="Select date and time"
+                    className="w-full px-4 py-3 rounded-xl bg-indigo-500/30 text-white placeholder-white/70 border border-white/30 focus:ring-2 focus:ring-indigo-300 transition shadow-md"
+                  />
+                )}
+              />
+              {errors.datetime && (
+                <p className="text-red-300 text-sm mt-1">
+                  {errors.datetime.message}
+                </p>
+              )}
+            </div>
+
+            {/* Location */}
+            <div>
+              <label className="block text-white font-semibold mb-1">
+                Location
+              </label>
+              <input
+                type="text"
+                {...register("location", { required: "Location is required" })}
+                className="w-full px-4 py-3 rounded-xl bg-indigo-500/30 text-white placeholder-white/70 border border-white/30 focus:ring-2 focus:ring-indigo-300 transition shadow-md"
+                placeholder="Enter location"
+              />
+              {errors.location && (
+                <p className="text-red-300 text-sm mt-1">
+                  {errors.location.message}
+                </p>
+              )}
+            </div>
+
+            {/* Healthcare Professional */}
+            <div>
+              <label className="block text-white font-semibold mb-1">
+                Healthcare Professional
+              </label>
+              <input
+                type="text"
+                {...register("healthcareProfessional", {
+                  required: "Professional name is required",
+                })}
+                className="w-full px-4 py-3 rounded-xl bg-indigo-500/30 text-white placeholder-white/70 border border-white/30 focus:ring-2 focus:ring-indigo-300 transition shadow-md"
+                placeholder="Enter professional name"
+              />
+              {errors.healthcareProfessional && (
+                <p className="text-red-300 text-sm mt-1">
+                  {errors.healthcareProfessional.message}
+                </p>
+              )}
+            </div>
+
+            {/* Camp Image (Full Width) */}
+            <div className="lg:col-span-2">
+              <label className="block text-white font-semibold mb-1">
+                Upload Camp Image
+              </label>
+              <input
+                type="file"
+                onChange={handleImageUpload}
+                className="file-input file-input-bordered bg-indigo-500/30 border-white/30 text-white"
+              />
+              {uploading && (
+                <p className="text-yellow-200 mt-1">Uploading image...</p>
+              )}
+              {campImage && (
+                <img
+                  src={campImage}
+                  alt="Preview"
+                  className="mt-3 rounded-xl shadow-lg w-48 h-48 object-cover border border-white/40"
                 />
               )}
-            />
-            {errors.datetime && (
-              <p className="text-red-300 text-sm mt-1">
-                {errors.datetime.message}
-              </p>
-            )}
-          </div>
+            </div>
 
-          {/* Location */}
-          <div>
-            <label className="block text-white font-semibold mb-1">
-              Location
-            </label>
-            <input
-              type="text"
-              {...register("location", { required: "Location is required" })}
-              className="w-full px-4 py-3 rounded-xl bg-indigo-500/30 text-white placeholder-white/70 border border-white/30 focus:ring-2 focus:ring-indigo-300 transition shadow-md"
-              placeholder="Enter location"
-            />
-            {errors.location && (
-              <p className="text-red-300 text-sm mt-1">
-                {errors.location.message}
-              </p>
-            )}
-          </div>
-
-          {/* Healthcare Professional */}
-          <div>
-            <label className="block text-white font-semibold mb-1">
-              Healthcare Professional
-            </label>
-            <input
-              type="text"
-              {...register("healthcareProfessional", {
-                required: "Professional name is required",
-              })}
-              className="w-full px-4 py-3 rounded-xl bg-indigo-500/30 text-white placeholder-white/70 border border-white/30 focus:ring-2 focus:ring-indigo-300 transition shadow-md"
-              placeholder="Enter professional name"
-            />
-            {errors.healthcareProfessional && (
-              <p className="text-red-300 text-sm mt-1">
-                {errors.healthcareProfessional.message}
-              </p>
-            )}
-          </div>
-
-          {/* Camp Image (Full Width) */}
-          <div className="lg:col-span-2">
-            <label className="block text-white font-semibold mb-1">
-              Upload Camp Image
-            </label>
-            <input
-              type="file"
-              onChange={handleImageUpload}
-              className="file-input file-input-bordered bg-indigo-500/30 border-white/30 text-white"
-            />
-            {uploading && (
-              <p className="text-yellow-200 mt-1">Uploading image...</p>
-            )}
-            {campImage && (
-              <img
-                src={campImage}
-                alt="Preview"
-                className="mt-3 rounded-xl shadow-lg w-48 h-48 object-cover border border-white/40"
+            {/* Description (Full Width) */}
+            <div className="lg:col-span-2">
+              <label className="block text-white font-semibold mb-1">
+                Description
+              </label>
+              <textarea
+                {...register("description", {
+                  required: "Description is required",
+                })}
+                className="w-full px-4 py-3 rounded-xl bg-indigo-500/30 text-white placeholder-white/70 border border-white/30 focus:ring-2 focus:ring-indigo-300 transition shadow-md"
+                rows="4"
+                placeholder="Enter camp description"
               />
-            )}
-          </div>
+              {errors.description && (
+                <p className="text-red-300 text-sm mt-1">
+                  {errors.description.message}
+                </p>
+              )}
+            </div>
 
-          {/* Description (Full Width) */}
-          <div className="lg:col-span-2">
-            <label className="block text-white font-semibold mb-1">
-              Description
-            </label>
-            <textarea
-              {...register("description", {
-                required: "Description is required",
-              })}
-              className="w-full px-4 py-3 rounded-xl bg-indigo-500/30 text-white placeholder-white/70 border border-white/30 focus:ring-2 focus:ring-indigo-300 transition shadow-md"
-              rows="4"
-              placeholder="Enter camp description"
-            />
-            {errors.description && (
-              <p className="text-red-300 text-sm mt-1">
-                {errors.description.message}
-              </p>
-            )}
-          </div>
-
-          {/* Submit Button (Full Width) */}
-          <div className="lg:col-span-2 text-center">
-            <button
-              type="submit"
-              disabled={uploading}
-              className="mt-6 px-6 py-2 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold shadow hover:scale-105 transition-transform duration-300 cursor-pointer"
-            >
-              Add Camp
-            </button>
-          </div>
-        </form>
+            {/* Submit Button (Full Width) */}
+            <div className="lg:col-span-2 text-center">
+              <button
+                type="submit"
+                disabled={uploading}
+                className="mt-6 px-6 py-2 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold shadow hover:scale-105 transition-transform duration-300 cursor-pointer"
+              >
+                Add Camp
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

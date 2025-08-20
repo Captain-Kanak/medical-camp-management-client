@@ -140,75 +140,130 @@ const ManageCamp = () => {
   if (isLoading) return <Spinner />;
 
   return (
-    <div className="p-5 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 min-h-screen">
-      <h2 className="text-3xl font-extrabold mb-6 text-white text-center drop-shadow-lg">
-        Manage Medical Camps
+    <div className="p-6 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 min-h-screen">
+      <h2 className="text-2xl lg:text-4xl font-bold mb-5 text-center text-white drop-shadow-md">
+        Manage Camps
       </h2>
 
+      {/* Search */}
       <SearchBar
         value={searchTerm}
         onChange={setSearchTerm}
-        placeholder="Search by camp name, participant, or status"
+        placeholder="Search by camp name, location, or professional"
       />
 
-      {/* Card Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-        {currentCamps.map((camp) => (
-          <div
-            key={camp._id}
-            className="bg-white rounded-xl shadow-md flex flex-col overflow-hidden"
-          >
-            {/* Image */}
-            <img
-              src={camp.image || "https://via.placeholder.com/400x200"}
-              alt={camp.campName}
-              className="w-full h-40 object-cover"
-            />
+      {/* Responsive Table */}
+      <div className="overflow-x-auto mt-4">
+        <table className="min-w-full backdrop-blur-md bg-white/20 text-white shadow-lg rounded-md md:border md:border-gray-300">
+          <thead className="hidden md:table-header-group bg-white/30">
+            <tr className="text-left text-sm uppercase md:border-b md:border-gray-300">
+              <th className="px-4 py-2 md:border-r md:border-gray-300">#</th>
+              <th className="px-4 py-2 md:border-r md:border-gray-300">
+                Image
+              </th>
+              <th className="px-4 py-2 md:border-r md:border-gray-300">
+                Camp Name
+              </th>
+              <th className="px-4 py-2 md:border-r md:border-gray-300">Date</th>
+              <th className="px-4 py-2 md:border-r md:border-gray-300">
+                Location
+              </th>
+              <th className="px-4 py-2 md:border-r md:border-gray-300">
+                Professional
+              </th>
+              <th className="px-4 py-2 md:border-r md:border-gray-300">Fees</th>
+              <th className="px-4 py-2 md:border-r md:border-gray-300">
+                Action
+              </th>
+            </tr>
+          </thead>
 
-            {/* Content */}
-            <div className="flex flex-col flex-grow p-4">
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                {camp.campName}
-              </h3>
-              <p className="text-sm text-gray-600">
-                <span className="font-medium">Date:</span>{" "}
-                {new Date(camp.datetime).toLocaleString()}
-              </p>
-              <p className="text-sm text-gray-600">
-                <span className="font-medium">Location:</span> {camp.location}
-              </p>
-              <p className="text-sm text-gray-600">
-                <span className="font-medium">Professional:</span>{" "}
-                {camp.healthcareProfessional}
-              </p>
-              <p className="text-sm text-gray-600 mb-4">
-                <span className="font-medium">Fees:</span> ${camp.fees}
-              </p>
+          <tbody>
+            {currentCamps.map((camp, index) => (
+              <tr
+                key={camp._id}
+                className="text-sm block md:table-row border-b border-gray-300 md:border-none"
+              >
+                {/* Index */}
+                <td className="px-4 py-2 block md:table-cell md:border md:border-gray-300">
+                  <span className="md:hidden font-semibold"># </span>
+                  {startIndex + index + 1}
+                </td>
 
-              {/* Actions pinned at bottom */}
-              <div className="mt-auto flex gap-2">
-                <button
-                  onClick={() => handleEdit(camp)}
-                  className="flex-1 bg-blue-500 hover:bg-blue-600 text-white text-sm py-2 rounded-md cursor-pointer"
+                {/* Image */}
+                <td className="px-4 py-2 block md:table-cell md:border md:border-gray-300">
+                  <span className="md:hidden font-semibold">Image: </span>
+                  <img
+                    src={camp.image || "https://via.placeholder.com/80"}
+                    alt={camp.campName}
+                    className="w-16 h-12 object-cover rounded-md"
+                  />
+                </td>
+
+                {/* Name */}
+                <td className="px-4 py-2 block md:table-cell md:border md:border-gray-300">
+                  <span className="md:hidden font-semibold">Camp Name: </span>
+                  {camp.campName}
+                </td>
+
+                {/* Date */}
+                <td className="px-4 py-2 block md:table-cell md:border md:border-gray-300">
+                  <span className="md:hidden font-semibold">Date: </span>
+                  {new Date(camp.datetime).toLocaleDateString()}
+                </td>
+
+                {/* Location */}
+                <td className="px-4 py-2 block md:table-cell md:border md:border-gray-300">
+                  <span className="md:hidden font-semibold">Location: </span>
+                  {camp.location}
+                </td>
+
+                {/* Professional */}
+                <td className="px-4 py-2 block md:table-cell md:border md:border-gray-300">
+                  <span className="md:hidden font-semibold">
+                    Professional:{" "}
+                  </span>
+                  {camp.healthcareProfessional}
+                </td>
+
+                {/* Fees */}
+                <td className="px-4 py-2 block md:table-cell md:border md:border-gray-300">
+                  <span className="md:hidden font-semibold">Fees: </span>$
+                  {camp.fees}
+                </td>
+
+                {/* Actions */}
+                <td className="px-4 py-2 block text-center md:table-cell md:border md:border-gray-300">
+                  <div className="flex flex-col sm:flex-row gap-2 justify-center">
+                    <button
+                      onClick={() => handleEdit(camp)}
+                      className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded cursor-pointer text-sm"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(camp._id)}
+                      className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded cursor-pointer text-sm"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+
+            {currentCamps.length === 0 && (
+              <tr className="block md:table-row">
+                <td
+                  colSpan="8"
+                  className="text-center py-4 text-gray-500 block border-b border-gray-300 md:table-cell md:border-none"
                 >
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleDelete(camp._id)}
-                  className="flex-1 bg-red-500 hover:bg-red-600 text-white text-sm py-2 rounded-md cursor-pointer"
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
-
-        {currentCamps.length === 0 && (
-          <p className="col-span-full text-center text-gray-600 py-6">
-            No camps found.
-          </p>
-        )}
+                  No camps found.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
 
       {/* Pagination */}
@@ -216,7 +271,7 @@ const ManageCamp = () => {
         <button
           onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
           disabled={currentPage === 1}
-          className={`px-4 py-2 rounded-xl font-semibold transition ${
+          className={`px-4 py-2 rounded font-semibold ${
             currentPage === 1
               ? "bg-gray-300 text-gray-500 cursor-not-allowed"
               : "bg-indigo-500 hover:bg-indigo-600 text-white cursor-pointer"
@@ -224,23 +279,25 @@ const ManageCamp = () => {
         >
           Prev
         </button>
+
         {[...Array(totalPages).keys()].map((page) => (
           <button
             key={page}
             onClick={() => setCurrentPage(page + 1)}
-            className={`px-5 py-2 rounded-xl font-semibold cursor-pointer ${
+            className={`px-4 py-2 rounded font-semibold cursor-pointer ${
               currentPage === page + 1
-                ? "bg-indigo-500 text-gray-200"
-                : "bg-indigo-200 text-gray-500 hover:bg-indigo-500 hover:text-gray-200"
+                ? "bg-indigo-500 text-white"
+                : "bg-indigo-200 text-gray-700 hover:bg-indigo-500 hover:text-white"
             }`}
           >
             {page + 1}
           </button>
         ))}
+
         <button
           onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
           disabled={currentPage === totalPages}
-          className={`px-4 py-2 rounded-xl font-semibold transition ${
+          className={`px-4 py-2 rounded font-semibold ${
             currentPage === totalPages
               ? "bg-gray-300 text-gray-500 cursor-not-allowed"
               : "bg-indigo-500 hover:bg-indigo-600 text-white cursor-pointer"
@@ -253,10 +310,18 @@ const ManageCamp = () => {
       {/* Modal (Edit Camp) */}
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50 p-4">
-          <div className="bg-white/20 backdrop-blur-lg rounded-2xl shadow-2xl p-6 w-full max-w-md overflow-y-auto">
-            <h3 className="text-2xl font-bold mb-4 text-white drop-shadow-md">
-              Edit Camp
-            </h3>
+          <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-md overflow-y-auto">
+            <h3 className="text-xl font-bold mb-4">Edit Camp</h3>
+            {/* You can reuse your edit form here */}
+          </div>
+        </div>
+      )}
+
+      {/* Modal (Edit Camp) */}
+      {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50 p-4">
+          <div className="bg-black rounded-xl shadow-lg p-6 w-full max-w-md overflow-y-auto">
+            <h3 className="text-xl font-bold mb-4">Edit Camp</h3>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               {/* Camp Name */}
               <div>

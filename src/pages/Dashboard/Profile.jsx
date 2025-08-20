@@ -76,7 +76,7 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-6">
-      <h2 className="text-4xl font-extrabold mb-10 text-white drop-shadow-xl text-center">
+      <h2 className="text-2xl lg:text-4xl font-extrabold mb-10 text-white drop-shadow-xl text-center">
         Your Profile
       </h2>
 
