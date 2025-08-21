@@ -21,6 +21,7 @@ import Analytics from "../pages/Dashboard/Participant/Analytics";
 import AboutUs from "../pages/about/AboutUs";
 import Contact from "../pages/contact/Contact";
 import ErrorPage from "../pages/Error/ErrorPage";
+import DashboardHome from "../pages/Dashboard/DashboardHome";
 
 export const router = createBrowserRouter([
   {
@@ -76,6 +77,9 @@ export const router = createBrowserRouter([
       </PrivateRouter>
     ),
     children: [
+      {
+        index: true, Component: DashboardHome
+      },
       {
         path: "profile",
         Component: Profile,
