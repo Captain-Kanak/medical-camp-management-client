@@ -149,7 +149,7 @@ const ManageCamp = () => {
       <SearchBar
         value={searchTerm}
         onChange={setSearchTerm}
-        placeholder="Search by camp name, location, or professional"
+        placeholder="🔍 Search by camp name, location, or professional"
       />
 
       {/* Responsive Table */}

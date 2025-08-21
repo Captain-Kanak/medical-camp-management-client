@@ -74,7 +74,7 @@ const ManageRegisteredCamps = () => {
       <SearchBar
         value={searchTerm}
         onChange={setSearchTerm}
-        placeholder="Search by camp name, participant, or status"
+        placeholder="🔍 Search by camp name, participant, or status"
       />
 
       {/* Responsive Table */}
@@ -140,12 +140,15 @@ const ManageRegisteredCamps = () => {
                   {/* Name */}
                   <td className="px-4 py-2 block md:table-cell md:border md:border-gray-300">
                     <span className="md:hidden font-semibold">
-                      Participant:
+                      Participant:{" "}
                     </span>
                     {camp.name}
                   </td>
 
-                  <td className="px-4 py-3">
+                  <td className="px-4 py-2 block md:table-cell md:border md:border-gray-300">
+                    <span className="md:hidden font-semibold">
+                      Payment Status:{" "}
+                    </span>
                     <span
                       className={`px-2 py-1 rounded-xl text-xs font-semibold ${
                         camp.payment_status === "paid"
@@ -156,7 +159,11 @@ const ManageRegisteredCamps = () => {
                       {camp.payment_status || "unpaid"}
                     </span>
                   </td>
-                  <td className="px-4 py-3">
+
+                  <td className="px-4 py-2 block md:table-cell md:border md:border-gray-300">
+                    <span className="md:hidden font-semibold">
+                      Confirmation Status:{" "}
+                    </span>
                     <span
                       className={`px-2 py-1 rounded-xl text-xs font-semibold ${
                         camp.confirmation_status === "confirmed"
@@ -167,6 +174,7 @@ const ManageRegisteredCamps = () => {
                       {camp.confirmation_status || "pending"}
                     </span>
                   </td>
+
                   {/* Actions */}
                   <td className="px-4 py-2 block text-center md:table-cell md:border md:border-gray-300">
                     <div className="flex flex-col sm:flex-row gap-2 justify-center">

@@ -116,7 +116,7 @@ const RegisteredCamp = () => {
 
   return (
     <div className="min-h-screen p-6 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500">
-      <h2 className="text-4xl font-extrabold mb-8 text-white text-center drop-shadow-lg">
+      <h2 className="text-2xl lg:text-4xl font-bold mb-5 text-center text-white drop-shadow-md">
         My Registered Camps
       </h2>
 
@@ -126,92 +126,142 @@ const RegisteredCamp = () => {
         placeholder="🔍 Search by camp name, participant, or status..."
       />
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-6">
-        {currentCamps.map((camp) => (
-          <div
-            key={camp._id}
-            className="bg-white/20 backdrop-blur-lg rounded-3xl p-6 flex flex-col justify-between shadow-2xl hover:shadow-3xl transition duration-300 border border-white/30"
-          >
-            <div className="mb-4">
-              <h3 className="text-xl font-semibold text-white drop-shadow-md mb-2">
-                {camp.campName}
-              </h3>
-              <p className="text-white/80 mb-1">
-                <span className="font-medium">Participant:</span> {camp.name}
-              </p>
-              <p className="text-white/80 mb-1">
-                <span className="font-medium">Fees:</span> ${camp.fees}
-              </p>
-              <p className="text-white/80 mb-1">
-                <span className="font-medium">Payment:</span>{" "}
-                <span
-                  className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    camp.payment_status === "paid"
-                      ? "bg-green-100 text-green-700"
-                      : "bg-yellow-100 text-yellow-700"
-                  }`}
-                >
-                  {camp.payment_status}
-                </span>
-              </p>
-              <p className="text-white/80">
-                <span className="font-medium">Confirmation:</span>{" "}
-                <span
-                  className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    camp.confirmation_status === "confirmed"
-                      ? "bg-green-100 text-green-700"
-                      : "bg-red-100 text-red-700"
-                  }`}
-                >
-                  {camp.confirmation_status}
-                </span>
-              </p>
-            </div>
+      <div className="overflow-x-auto mt-4">
+        <table className="min-w-full backdrop-blur-md bg-white/20 text-white shadow-lg rounded-md md:border md:border-gray-300">
+          <thead className="hidden md:table-header-group bg-white/30">
+            <tr className="text-left text-sm uppercase md:border-b md:border-gray-300">
+              <th className="px-4 py-2 md:border-r md:border-gray-300">#</th>
+              <th className="px-4 py-2 md:border-r md:border-gray-300">
+                Camp Name
+              </th>
+              <th className="px-4 py-2 md:border-r md:border-gray-300">Date</th>
+              <th className="px-4 py-2 md:border-r md:border-gray-300">Fees</th>
+              <th className="px-4 py-2 md:border-r md:border-gray-300">
+                Payment
+              </th>
+              <th className="px-4 py-2 md:border-r md:border-gray-300">
+                Confirmation
+              </th>
+              <th className="px-4 py-2 md:border-r md:border-gray-300">
+                Actions
+              </th>
+            </tr>
+          </thead>
 
-            <div className="flex flex-wrap gap-2 mt-3">
-              {camp.payment_status === "paid" && (
-                <button
-                  onClick={() => openFeedbackModal(camp.campId)}
-                  className="px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition cursor-pointer"
-                >
-                  Feedback
-                </button>
-              )}
-              <button
-                onClick={() => handleCancel(camp._id, camp.campId)}
-                disabled={
-                  camp.payment_status === "paid" ||
-                  camp.confirmation_status === "confirmed"
-                }
-                className={`px-4 py-2 rounded-lg transition ${
-                  camp.payment_status === "paid" ||
-                  camp.confirmation_status === "confirmed"
-                    ? "bg-gray-400 text-gray-700 cursor-not-allowed"
-                    : "bg-red-500 text-white hover:bg-red-600 cursor-pointer"
-                }`}
+          <tbody>
+            {currentCamps.map((camp, index) => (
+              <tr
+                key={camp._id}
+                className="text-sm block md:table-row border-b border-gray-300 md:border-none"
               >
-                Cancel
-              </button>
-              <button
-                onClick={() => handlePay(camp._id)}
-                disabled={camp.payment_status === "paid"}
-                className={`px-4 py-2 rounded-lg transition ${
-                  camp.payment_status === "paid"
-                    ? "bg-gray-400 text-gray-700 cursor-not-allowed"
-                    : "bg-green-500 text-white hover:bg-green-600 cursor-pointer"
-                }`}
-              >
-                {camp.payment_status === "paid" ? "Paid" : "Pay Now"}
-              </button>
-            </div>
-          </div>
-        ))}
+                {/* Index */}
+                <td className="px-4 py-2 block md:table-cell md:border md:border-gray-300">
+                  <span className="md:hidden font-semibold"># </span>
+                  {startIndex + index + 1}
+                </td>
 
-        {registeredCamps.length === 0 && (
-          <p className="text-center col-span-full text-white mt-6">
-            You haven’t registered for any camps yet.
-          </p>
-        )}
+                {/* Name */}
+                <td className="px-4 py-2 block md:table-cell md:border md:border-gray-300">
+                  <span className="md:hidden font-semibold">Camp Name: </span>
+                  {camp.campName}
+                </td>
+
+                {/* Date */}
+                <td className="px-4 py-2 block md:table-cell md:border md:border-gray-300">
+                  <span className="md:hidden font-semibold">Date: </span>
+                  {new Date(camp.registered_at).toLocaleString("en-US", {
+                    dateStyle: "medium",
+                    timeStyle: "short",
+                  })}
+                </td>
+
+                {/* Fees */}
+                <td className="px-4 py-2 block md:table-cell md:border md:border-gray-300">
+                  <span className="md:hidden font-semibold">Fees: </span>$
+                  {camp.fees}
+                </td>
+
+                <td className="px-4 py-2 block md:table-cell md:border md:border-gray-300">
+                  <span className="md:hidden font-semibold">
+                    Payment Status:{" "}
+                  </span>
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      camp.payment_status === "paid"
+                        ? "bg-green-100 text-green-700"
+                        : "bg-yellow-100 text-yellow-700"
+                    }`}
+                  >
+                    {camp.payment_status}
+                  </span>
+                </td>
+
+                <td className="px-4 py-2 block md:table-cell md:border md:border-gray-300">
+                  <span className="md:hidden font-semibold">
+                    Confirmation Status:{" "}
+                  </span>
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      camp.confirmation_status === "confirmed"
+                        ? "bg-green-100 text-green-700"
+                        : "bg-red-100 text-red-700"
+                    }`}
+                  >
+                    {camp.confirmation_status}
+                  </span>
+                </td>
+
+                {/* Actions */}
+                <td className="px-4 py-2 block text-center md:table-cell md:border md:border-gray-300">
+                  <div className="flex sm:flex-row gap-2 justify-center">
+                    {camp.payment_status === "paid" && (
+                      <button
+                        onClick={() => openFeedbackModal(camp.campId)}
+                        className="px-3 py-1 rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition cursor-pointer"
+                      >
+                        Feedback
+                      </button>
+                    )}
+                    <button
+                      onClick={() => handleCancel(camp._id, camp.campId)}
+                      disabled={
+                        camp.payment_status === "paid" ||
+                        camp.confirmation_status === "confirmed"
+                      }
+                      className={`px-3 py-1 rounded-lg transition ${
+                        camp.payment_status === "paid" ||
+                        camp.confirmation_status === "confirmed"
+                          ? "bg-gray-400 text-gray-700 cursor-not-allowed"
+                          : "bg-red-500 text-white hover:bg-red-600 cursor-pointer"
+                      }`}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={() => handlePay(camp._id)}
+                      disabled={camp.payment_status === "paid"}
+                      className={`px-3 py-1 rounded-lg transition ${
+                        camp.payment_status === "paid"
+                          ? "bg-gray-400 text-gray-700 cursor-not-allowed"
+                          : "bg-green-500 text-white hover:bg-green-600 cursor-pointer"
+                      }`}
+                    >
+                      {camp.payment_status === "paid" ? "Paid" : "Pay Now"}
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+
+            {registeredCamps.length === 0 && (
+              <tr>
+                <td colSpan="6" className="text-center p-6 text-white">
+                  You haven’t registered for any camps yet.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
 
       {/* Pagination */}

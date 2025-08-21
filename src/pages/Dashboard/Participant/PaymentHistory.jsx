@@ -48,7 +48,7 @@ const PaymentHistory = () => {
       <SearchBar
         value={searchTerm}
         onChange={setSearchTerm}
-        placeholder="Search by camp name, participant, or status"
+        placeholder="🔍 Search by camp name, participant, or status"
       />
 
       {currentPayments.length === 0 ? (
@@ -56,40 +56,95 @@ const PaymentHistory = () => {
           No payment history available.
         </p>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-          {currentPayments.map((payment, index) => (
-            <div
-              key={payment._id}
-              className="bg-white/20 backdrop-blur-lg rounded-2xl p-5 shadow-2xl border border-white/30 flex flex-col gap-2 transition-transform hover:scale-105"
-            >
-              <p className="text-white/90 font-semibold">
-                #{startIndex + index + 1} - {payment.campName}
-              </p>
-              <p className="text-white/80">
-                <span className="font-semibold">Participant:</span>{" "}
-                {payment.name}
-              </p>
-              <p className="text-white/80">
-                <span className="font-semibold">Fees:</span> ${payment.fees}
-              </p>
-              <p>
-                <span
-                  className="px-2 py-1 rounded-full text-sm font-semibold mr-2
-                  text-white 
-                  bg-green-500/80"
+        <div className="overflow-x-auto mt-4">
+          <table className="min-w-full backdrop-blur-md bg-white/20 text-white shadow-lg rounded-md md:border md:border-gray-300">
+            <thead className="hidden md:table-header-group bg-white/30">
+              <tr className="text-left text-sm uppercase md:border-b md:border-gray-300">
+                <th className="px-4 py-2 md:border-r md:border-gray-300">#</th>
+                <th className="px-4 py-2 md:border-r md:border-gray-300">
+                  Camp Name
+                </th>
+                <th className="px-4 py-2 md:border-r md:border-gray-300">
+                  Date
+                </th>
+                <th className="px-4 py-2 md:border-r md:border-gray-300">
+                  Fees
+                </th>
+                <th className="px-4 py-2 md:border-r md:border-gray-300">
+                  Payment Status
+                </th>
+                <th className="px-4 py-2 md:border-r md:border-gray-300">
+                  Confirmation
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {currentPayments.map((payment, index) => (
+                <tr
+                  key={payment._id}
+                  className="text-sm block md:table-row border-b border-gray-300 md:border-none"
                 >
-                  {payment.payment_status}
-                </span>
-                <span
-                  className="px-2 py-1 rounded-full text-sm font-semibold
-                  text-white 
-                  bg-blue-500/80"
-                >
-                  {payment.confirmation_status}
-                </span>
-              </p>
-            </div>
-          ))}
+                  {/* Index */}
+                  <td className="px-4 py-2 block md:table-cell md:border md:border-gray-300">
+                    <span className="md:hidden font-semibold"># </span>
+                    {startIndex + index + 1}
+                  </td>
+
+                  {/* Name */}
+                  <td className="px-4 py-2 block md:table-cell md:border md:border-gray-300">
+                    <span className="md:hidden font-semibold">Camp Name: </span>
+                    {payment.campName}
+                  </td>
+
+                  {/* Date */}
+                  <td className="px-4 py-2 block md:table-cell md:border md:border-gray-300">
+                    <span className="md:hidden font-semibold">Date: </span>
+                    {new Date(payment.paid_at).toLocaleString("en-US", {
+                      dateStyle: "medium",
+                      timeStyle: "short",
+                    })}
+                  </td>
+
+                  {/* Fees */}
+                  <td className="px-4 py-2 block md:table-cell md:border md:border-gray-300">
+                    <span className="md:hidden font-semibold">Fees: </span>$
+                    {payment.fees}
+                  </td>
+
+                  <td className="px-4 py-2 block md:table-cell md:border md:border-gray-300">
+                    <span className="md:hidden font-semibold">
+                      Payment Status:{" "}
+                    </span>
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        payment.payment_status === "paid"
+                          ? "bg-green-100 text-green-700"
+                          : "bg-yellow-100 text-yellow-700"
+                      }`}
+                    >
+                      {payment.payment_status}
+                    </span>
+                  </td>
+
+                  <td className="px-4 py-2 block md:table-cell md:border md:border-gray-300">
+                    <span className="md:hidden font-semibold">
+                      Confirmation Status:{" "}
+                    </span>
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        payment.confirmation_status === "confirmed"
+                          ? "bg-green-100 text-green-700"
+                          : "bg-red-100 text-red-700"
+                      }`}
+                    >
+                      {payment.confirmation_status}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
 
