@@ -10,7 +10,7 @@ A comprehensive full-stack platform designed to facilitate the seamless **organi
 | :--- | :--- |
 | **Live Site** | [https://medical-camp-management-f1b2a.web.app/](https://medical-camp-management-f1b2a.web.app/) |
 | **Client Repository** | [https://github.com/Captain-Kanak/medical-camp-management-client](https://github.com/Captain-Kanak/medical-camp-management-client) |
-| **Server Repository** | *[Insert Server Repository Link Here]* |
+| **Server Repository** | *[https://github.com/Captain-Kanak/medical-camp-management-server](https://github.com/Captain-Kanak/medical-camp-management-server) |
 
 ---
 
